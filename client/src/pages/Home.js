@@ -6,6 +6,7 @@ import logo from '../logo.png';
 const Home = () => {
   const history = useHistory();
   const handleBuy = () => history.push('/list');
+  const handleSell = () => history.push('/seller');
 
   return (
     <Container fluid className="App">
@@ -25,7 +26,7 @@ const Home = () => {
           <Card style={{ width: '100%' }}>
             <Card.Title className="bg-secondary text-center py-3 title-text"><h2>Seller</h2></Card.Title>
             <Card.Text className="text-center">Select this option if you are looking to sell items or services.</Card.Text>
-            <Button variant="secondary">Sell</Button>
+            <Button variant="secondary" onClick={handleSell}>Sell</Button>
           </Card>
         </Col>
       </Row>
