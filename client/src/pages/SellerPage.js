@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, InputGroup } from 'react-bootstrap';
+import { Container, Row, Form, InputGroup } from 'react-bootstrap';
 
 const ItemPage = () => {
     const [itemName, setItemName] = useState();
