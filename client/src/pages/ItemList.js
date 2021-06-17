@@ -28,6 +28,7 @@ class ItemList extends React.Component {
                                     img={item.img}
                                     ldesc={item.description}
                                     itemId={item.id}
+                                    price={item.price}
                                 />
                             </Col>
                         </Row>

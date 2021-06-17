@@ -1,71 +1,109 @@
-import React, { useState } from 'react';
-import { Container, Row, Form, InputGroup } from 'react-bootstrap';
+import React from 'react';
+import { Container, Row, Form, InputGroup, Button } from 'react-bootstrap';
+import { addItem } from '../actions';
+import { connect } from 'react-redux';
 
-const ItemPage = () => {
-    const [itemName, setItemName] = useState();
-    const [itemType, setItemType] = useState(null)
-    const [shortDesc, setShortDesc] = useState();
-    const [longDesc, setLongDesc] = useState();
-    const [openingBid, setOpeningBid] = useState();
-    const [bidIncrement, setBidIncrement] = useState();
+class ItemPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            values: {
+                title: '',
+                description: '',
+                shortdesc: '',
+                openingBid: '',
+                category: null,
+                sellTimer: 600000,
+                readyToSell: false,
+                timerSet: false,
+                increment: '',
+                sellerUserId: this.props.currentUserId
+            }
+        }
+    }
 
-    return (
-        <Container className="App">
-            <h2>What are You Looking to Sell?</h2>
-            <Row>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>Name of Item</Form.Label>
-                        <Form.Control type="text" name="itemName" id="itemName" bsSize="lg" required value={itemName} onChange={e => setItemName(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Type of Item</Form.Label>
-                        <Form.Control as="select" name="itemType" id="itemType" bsSize="lg" required value={itemType} onChange={e => setItemType(e.target.value)}>
-                            <option default value={null}>Select One</option>
-                            <option value="furniture">Furniture</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="automotive">Automotive</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="services">Services</option>
-                            <option value="other">Other</option>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Short Description</Form.Label>
-                        <Form.Control type="textarea" style={{height: '200px'}} name="itemShtDesc" id="itemShtDesc" bsSize="lg" required value={shortDesc} onChange={e => setShortDesc(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Long Description</Form.Label>
-                        <Form.Control type="textarea" style={{height: '200px'}} name="itemLngDesc" id="itemLngDesc" bsSize="lg" required value={longDesc} onChange={e => setLongDesc(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Opening Bid</Form.Label>
-                        <InputGroup>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text>$</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <Form.Control type="number" name="openingBid" id="openingBid" bsSize="lg" required value={openingBid} onChange={e => setOpeningBid(e.target.value)} />
-                        </InputGroup>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Bid Increments (How much for each bid increase)</Form.Label>
-                        <InputGroup>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text>$</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <Form.Control type="number" name="bidIncrement" id="bidIncrement" bsSize="lg" required value={bidIncrement} onChange={e => setBidIncrement(e.target.value)} />
-                        </InputGroup>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.File
-                            id="product-img"
-                            label="Images"
-                        />
-                    </Form.Group>
-                </Form>
-            </Row>
-        </Container>
-    );
-};
+    handleSubmit(e) {
+        e.preventDefault();
+        this.addItem(this.state.values);
+    }
 
-export default ItemPage;
+    myChangeHandler = (e) => {
+        this.setState({
+            values: { ...this.state.values, [e.target.name]: e.target.value }
+        })
+    }
+    
+    render() {
+        return (
+            <Container className="App">
+                <h2>What are You Looking to Sell?</h2>
+                <Row>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Group>
+                            <Form.Label>Name of Item</Form.Label>
+                            <Form.Control type="text" name="title" id="title" bsSize="lg" required value={this.state.values.title} onChange={this.myChangeHandler} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Type of Item</Form.Label>
+                            <Form.Control as="select" name="category" id="category" bsSize="lg" required value={this.state.values.category} onChange={this.myChangeHandler}>
+                                <option default value={null}>Select One</option>
+                                <option value="furniture">Furniture</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="automotive">Automotive</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="services">Services</option>
+                                <option value="other">Other</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Short Description</Form.Label>
+                            <Form.Control type="textarea" style={{height: '200px'}} name="shortdesc" id="shortdesc" bsSize="lg" required value={this.state.values.shortdesc} onChange={this.myChangeHandler} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Long Description</Form.Label>
+                            <Form.Control type="textarea" style={{height: '200px'}} name="description" id="description" bsSize="lg" required value={this.state.values.description} onChange={this.myChangeHandler} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Opening Bid</Form.Label>
+                            <InputGroup>
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>$</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control type="number" name="openingBid" id="openingBid" bsSize="lg" required value={this.state.values.openingBid} onChange={this.myChangeHandler} />
+                            </InputGroup>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Bid Increments (How much for each bid increase)</Form.Label>
+                            <InputGroup>
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>$</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control type="number" name="increment" id="increment" bsSize="lg" required value={this.state.values.increment} onChange={this.myChangeHandler} />
+                            </InputGroup>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="product-img"
+                                label="Images"
+                                multiple
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Button variant="primary" type="submit">Submit</Button>
+                        </Form.Group>
+                    </Form>
+                </Row>
+            </Container>
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return { 
+        message: state.message,
+        isSignedIn: state.auth.isSignedIn,
+        currentUserId: state.auth.userId
+    }
+}
+
+export default connect(mapStateToProps)(ItemPage);

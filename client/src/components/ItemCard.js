@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, ProgressBar, Row, Col, Button } from 'react-bootstrap';
 
 const ItemCard = (props) => {
-
     return (
         <Card>
             <Card.Header as="h4" className="bg-secondary title-text">{props.title}</Card.Header>
@@ -12,11 +11,23 @@ const ItemCard = (props) => {
                 <Card.Text>
                     {props.desc}
                 </Card.Text>
-                <Button variant="primary">
-                    <Link to={`/items/${props.itemId}`} className="text-white">
-                        More Info
-                    </Link>
-                </Button>
+                <Row>
+                    <Col md={4}>
+                        <Button variant="primary">
+                            <Link to={`/items/${props.itemId}`} className="text-white">
+                                More Info
+                            </Link>
+                        </Button>
+                    </Col>
+                    <Col md={6} className="text-right">
+                        Current Bid:<br />
+                        ${props.price}
+                    </Col>
+                    <Col md={2}>
+                        <Button variant="primary" className="increase-bid">Bid</Button>
+                    </Col>
+                </Row>
+
                 <Row>
                     <Col>&nbsp;</Col>
                 </Row>

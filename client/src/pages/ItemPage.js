@@ -14,7 +14,7 @@ class ItemPage extends React.Component {
         if (!this.props.item) {
             return <div>Loading...</div>
         }
-
+        
         return (
             <Container className="App">
                 <Row>
@@ -34,7 +34,11 @@ class ItemPage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return { item: state.items[ownProps.match.params.id] }
+    return { 
+        item: state.items[ownProps.match.params.id],
+        isSignedIn: state.auth.isSignedIn,
+        currentUserId: state.auth.userId
+    }
 }
 
 export default connect(mapStateToProps, { fetchItem })(ItemPage);
