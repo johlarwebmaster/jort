@@ -25,7 +25,6 @@ export const fetchItem = (id) => async dispatch => {
     dispatch({ type: 'FETCH_ITEM', payload: response.data });
 };
 
-export const addItem = (formValues) => dispatch => {
-    items.post('./img', formValues);
-    dispatch({ type: 'ADD_ITEM', payload: formValues });
+export const addItem = formValues => async dispatch => {
+    items.post('/items', formValues);
 };

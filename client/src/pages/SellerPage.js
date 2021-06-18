@@ -12,25 +12,30 @@ class ItemPage extends React.Component {
                 description: '',
                 shortdesc: '',
                 openingBid: '',
-                category: null,
+                category: 'select',
                 sellTimer: 600000,
                 readyToSell: false,
                 timerSet: false,
                 increment: '',
-                sellerUserId: this.props.currentUserId
+                img: [],
+                sellerUserId: ''
             }
         }
-    }
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.myChangeHandler = this.myChangeHandler.bind(this);
+    };
 
     handleSubmit(e) {
         e.preventDefault();
-        this.addItem(this.state.values);
+        this.setState({ values: { ...this.state.values, sellerUserId: this.props.currentUserId } });
+        this.props.addItem(this.state.values);
     }
 
     myChangeHandler = (e) => {
         this.setState({
             values: { ...this.state.values, [e.target.name]: e.target.value }
-        })
+        });
     }
     
     render() {
@@ -46,7 +51,7 @@ class ItemPage extends React.Component {
                         <Form.Group>
                             <Form.Label>Type of Item</Form.Label>
                             <Form.Control as="select" name="category" id="category" bsSize="lg" required value={this.state.values.category} onChange={this.myChangeHandler}>
-                                <option default value={null}>Select One</option>
+                                <option default disabled value={null}>Select One</option>
                                 <option value="furniture">Furniture</option>
                                 <option value="electronics">Electronics</option>
                                 <option value="automotive">Automotive</option>
@@ -83,9 +88,11 @@ class ItemPage extends React.Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.File
-                                id="product-img"
+                                id="img"
                                 label="Images"
                                 multiple
+                                value={this.state.values.img}
+                                onChange={this.myChangeHandler}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -106,4 +113,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ItemPage);
+export default connect(mapStateToProps, { addItem })(ItemPage);
