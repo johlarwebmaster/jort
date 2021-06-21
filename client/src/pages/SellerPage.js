@@ -18,7 +18,7 @@ class ItemPage extends React.Component {
                 timerSet: false,
                 increment: '',
                 img: [],
-                sellerUserId: ''
+                sellerName: ''
             }
         }
 
@@ -28,7 +28,7 @@ class ItemPage extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({ values: { ...this.state.values, sellerUserId: this.props.currentUserId } });
+        this.setState({ values: { ...this.state.values, sellerName: this.props.fullName } });
         this.props.addItem(this.state.values);
     }
 
@@ -36,6 +36,10 @@ class ItemPage extends React.Component {
         this.setState({
             values: { ...this.state.values, [e.target.name]: e.target.value }
         });
+    }
+
+    handleAttachFile = (e) => {
+        console.log('files upload', e.target.files)
     }
     
     render() {
@@ -91,8 +95,7 @@ class ItemPage extends React.Component {
                                 id="img"
                                 label="Images"
                                 multiple
-                                value={this.state.values.img}
-                                onChange={this.myChangeHandler}
+                                onChange={this.handleAttachFile}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -109,6 +112,7 @@ const mapStateToProps = (state) => {
     return { 
         message: state.message,
         isSignedIn: state.auth.isSignedIn,
+        fullName: state.auth.fullName,
         currentUserId: state.auth.userId
     }
 }

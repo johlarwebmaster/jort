@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import ItemList from './pages/ItemList';
 import ItemPage from './pages/ItemPage';
 import SellerPage from './pages/SellerPage';
-import Profile from './pages/Profile';
 import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css"
@@ -18,7 +17,6 @@ function App() {
       <Route path="/list" component={ItemList} />
       <Route path="/items/:id" component={ItemPage} />
       <Route path="/seller" component={SellerPage} />
-      <Route path="/profile" component={Profile} />
     </Router>
   );
 }

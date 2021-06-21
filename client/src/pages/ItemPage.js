@@ -19,12 +19,12 @@ class ItemPage extends React.Component {
             <Container className="App">
                 <Row>
                     <Col md={3}>
-                        <img src={this.props.item.imagepath} width="100%" alt={this.props.item.imagealt} />
+                        &nbsp;
                     </Col>
                     <Col md={9}>
                         <h2 className="bg-primary">{this.props.item.title}</h2>
                         <p>{this.props.item.description}</p>
-                        <h5 className="text-secondary">${this.props.item.price}</h5>
+                        <h5 className="text-secondary">${this.props.item.openingBid}</h5>
                         <ProgressBar animated variant="success" now={90} />
                     </Col>
                 </Row>

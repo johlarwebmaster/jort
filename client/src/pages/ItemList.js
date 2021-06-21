@@ -16,7 +16,7 @@ class ItemList extends React.Component {
                     return (
                         <Row className="my-2" key={item.id}>
                             <Col md={3}>
-                                <img src={item.imagepath} width="100%" alt={item.imagealt} />
+                                &nbsp;
                             </Col>
                             <Col md={9}>
                                 <ItemCard
@@ -25,10 +25,9 @@ class ItemList extends React.Component {
                                     progress={90}
                                     variant="success"
                                     time="9:00"
-                                    img={item.img}
                                     ldesc={item.description}
                                     itemId={item.id}
-                                    price={item.price}
+                                    price={item.openingBid}
                                 />
                             </Col>
                         </Row>

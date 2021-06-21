@@ -47,8 +47,7 @@ class GoogleAuth extends React.Component {
             return (
                 <Nav className="ml-auto">
                     <NavDropdown alignRight title={greeting} id="nav-dropdown">
-                        <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                        <NavDropdown.Item href="/myitems">My Items</NavDropdown.Item>
+                        <NavDropdown.Item href="/seller">Looking to Sell?</NavDropdown.Item>
                         <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={this.onSignOutClick}>Log Out</NavDropdown.Item>
