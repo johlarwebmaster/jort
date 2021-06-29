@@ -17,9 +17,17 @@ class ItemPage extends React.Component {
                 readyToSell: false,
                 timerSet: false,
                 increment: '',
-                img: [],
-                sellerName: ''
-            }
+                sellerName: '',
+                file1: '',
+                file2: '',
+                file3: '',
+                file4: '',
+                file5: '',
+                file6: '',
+                file7: '',
+                file8: '',
+                file9: ''
+            },
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,7 +47,9 @@ class ItemPage extends React.Component {
     }
 
     handleAttachFile = (e) => {
-        console.log('files upload', e.target.files)
+        this.setState({
+            values: { ...this.state.values, [e.target.name]: e.target.files }
+        });
     }
     
     render() {
@@ -92,9 +102,64 @@ class ItemPage extends React.Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.File
-                                id="img"
-                                label="Images"
-                                multiple
+                                id="file1"
+                                label="Featured Image"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file2"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file3"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file4"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file5"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file6"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file7"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file8"
+                                label="Image/Video"
+                                onChange={this.handleAttachFile}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.File
+                                id="file9"
+                                label="Image/Video"
                                 onChange={this.handleAttachFile}
                             />
                         </Form.Group>
