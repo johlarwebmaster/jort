@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Form, InputGroup, Button } from 'react-bootstrap';
+import FooterMessage from '../components/FooterMessage';
 import { addItem } from '../actions';
 import { connect } from 'react-redux';
 
@@ -168,6 +169,7 @@ class ItemPage extends React.Component {
                         </Form.Group>
                     </Form>
                 </Row>
+                <FooterMessage heading={"TERMS AND CONDITIONS"} message={"Every item, product, and service sold on JORT is subject to our Terms of Service. Please review our terms and conditions if you have any questions."} buttonLink={"/terms"} buttonText={"Learn More"} />
             </Container>
         )
     }
