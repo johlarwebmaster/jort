@@ -34,7 +34,7 @@ class ItemList extends React.Component {
                         </Row>
                     )
                 })}
-                <FooterMessage heading={"TERMS AND CONDITIONS"} message={"Every item, product, and service sold on JORT is subject to our Terms of Service. Please review our terms and conditions if you have any questions."} buttonLink={"terms"} />
+                <FooterMessage heading={"TERMS AND CONDITIONS"} message={"Every item, product, and service sold on JORT is subject to our Terms of Service. Please review our terms and conditions if you have any questions."} buttonLink={"buyerTerms"} />
             </Container>
         )
     }
