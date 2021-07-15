@@ -28,3 +28,9 @@ export const fetchItem = (id) => async dispatch => {
 export const addItem = formValues => async dispatch => {
     items.post('/items', formValues);
 };
+
+export const bidItem = (id, itemValues) => async dispatch => {
+    const response = await items.patch(`/items/${id}`, itemValues);
+
+    dispatch({ type: 'BID_ITEM', payload: response.data });
+};

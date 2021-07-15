@@ -3,15 +3,16 @@ const INITIAL_STATE = {
     userId: null,
     firstName: null,
     lastName: null,
-    fullName: null
+    fullName: null,
+    email: null
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case 'SIGN_IN':
-            return {...state, isSignedIn: true, userId: action.payload.userId, firstName: action.payload.firstName, lastName: action.payload.lastName, fullName: action.payload.fullName };
+            return {...state, isSignedIn: true, userId: action.payload.userId, firstName: action.payload.firstName, lastName: action.payload.lastName, fullName: action.payload.fullName, email: action.payload.email };
         case 'SIGN_OUT':
-            return {...state, isSignedIn: false, userId: null, firstName: null, lastName: null, fullName: null };
+            return {...state, isSignedIn: false, userId: null, firstName: null, lastName: null, fullName: null, email: null };
         default:
             return state;
     }

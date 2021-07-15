@@ -11,6 +11,8 @@ export default (state = {}, action) => {
                 ...state,
                 message: "Success!"
             };
+        case 'BID_ITEM':
+            return { ...state, [action.payload.id]: action.payload };
         default:
             return state;
     }

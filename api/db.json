@@ -4,16 +4,20 @@
       "title": "Rocelco 46\" Large Height Adjustable Standing Desk Converter",
       "description": "Rocelco 46\" Large Height Adjustable Standing Desk Converter, Quick Sit Standup Triple Monitor Riser, Gas Spring Assist Computer Workstation, Retractable Keyboard Tray, (R DADRB-46), Black Pickup only.",
       "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "openingBid": "200.00",
+      "openingBid": "300.00",
       "imagepath": "https://img.ksl.com/mx/mplace-classifieds.ksl.com/3353540-1613863988-738308.jpeg?filter=marketplace/664x500",
       "imagealt": "This is an alt tag",
       "sellerName": "Joe Schmoe",
       "category": "furniture",
-      "sellTimer": 600000,
+      "sellTimer": "Thu Jul 15 2021 07:22:00 GMT-0600 (Mountain Daylight Time)",
       "readyToSell": false,
       "timerSet": false,
+      "bidCountdown": 120000,
+      "timerUp": false,
       "increment": "10.00",
-      "id": 1
+      "id": 1,
+      "buyerId": "100201121835101672627",
+      "buyerName": "Raul Smith"
     },
     {
       "title": "Yamaha Pw50",
@@ -22,13 +26,17 @@
       "openingBid": "350.00",
       "imagepath": "https://img.ksl.com/mx/mplace-classifieds.ksl.com/3982534-1613864091-939683.jpg?filter=marketplace/664x500",
       "imagealt": "This is an alt tag",
-      "sellerName": "Joe Schmoe",
+      "sellerName": "Raul Smith",
       "category": "automotive",
-      "sellTimer": 600000,
+      "sellTimer": "Thu Jul 15 2021 08:22:00 GMT-0600 (Mountain Daylight Time)",
       "readyToSell": false,
       "timerSet": false,
+      "bidCountdown": 120000,
+      "timerUp": false,
       "increment": "10.00",
-      "id": 2
+      "id": 2,
+      "buyerId": "",
+      "buyerName": ""
     },
     {
       "title": "Samsung Gear S2",
@@ -39,11 +47,15 @@
       "imagealt": "This is an alt tag",
       "sellerName": "Joe Schmoe",
       "category": "electronics",
-      "sellTimer": 600000,
+      "sellTimer": "Thu Jul 15 2021 09:22:00 GMT-0600 (Mountain Daylight Time)",
       "readyToSell": false,
       "timerSet": false,
+      "bidCountdown": 120000,
+      "timerUp": false,
       "increment": "5.00",
-      "id": 3
+      "id": 3,
+      "buyerId": "",
+      "buyerName": ""
     },
     {
       "title": "New Balance Tennis Shoes",
@@ -54,11 +66,15 @@
       "imagealt": "This is an alt tag",
       "sellerName": "Joe Schmoe",
       "category": "clothing",
-      "sellTimer": 600000,
+      "sellTimer": "Thu Jul 15 2021 10:22:00 GMT-0600 (Mountain Daylight Time)",
       "readyToSell": false,
       "timerSet": false,
+      "bidCountdown": 120000,
+      "timerUp": false,
       "increment": "1.00",
-      "id": 4
+      "id": 4,
+      "buyerId": "",
+      "buyerName": ""
     },
     {
       "title": "Microfiber sectional and ottoman",
@@ -69,11 +85,44 @@
       "imagealt": "This is an alt tag",
       "sellerName": "Joe Schmoe",
       "category": "furniture",
-      "sellTimer": 600000,
+      "sellTimer": "Thu Jul 15 2021 11:22:00 GMT-0600 (Mountain Daylight Time)",
       "readyToSell": false,
       "timerSet": false,
+      "bidCountdown": 120000,
+      "timerUp": false,
       "increment": "10.00",
-      "id": 5
+      "id": 5,
+      "buyerId": "",
+      "buyerName": ""
+    },
+    {
+      "title": "yibambe",
+      "description": "what",
+      "shortdesc": "yibambe",
+      "openingBid": "18",
+      "category": "select",
+      "sellTimer": "Thu Jul 15 2021 13:22:00 GMT-0600 (Mountain Daylight Time)",
+      "readyToSell": false,
+      "timerSet": false,
+      "bidCountdown": 120000,
+      "timerUp": false,
+      "increment": "2",
+      "sellerName": "",
+      "buyerId": "",
+      "buyerName": "",
+      "file1": "",
+      "file2": "",
+      "file3": "",
+      "file4": "",
+      "file5": "",
+      "file6": "",
+      "file7": "",
+      "file8": "",
+      "file9": "",
+      "": {
+        "0": {}
+      },
+      "id": 6
     }
   ]
 }

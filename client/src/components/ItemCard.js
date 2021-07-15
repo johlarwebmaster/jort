@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, ProgressBar, Row, Col, Button } from 'react-bootstrap';
 
 const ItemCard = (props) => {
+
+    const [bid, setBid] = useState(props.price);
+
+    const buttonClick = () => {
+        setBid(bid + props.increment);
+        console.log(bid);
+    }
+
     return (
         <Card>
             <Card.Header as="h4" className="bg-secondary title-text">{props.title}</Card.Header>
@@ -24,7 +32,7 @@ const ItemCard = (props) => {
                         ${props.price}
                     </Col>
                     <Col md={2}>
-                        <Button variant="primary" className="increase-bid">Bid</Button>
+                        <Button variant="primary" className="increase-bid" onClick={() => buttonClick}>Bid</Button>
                     </Col>
                 </Row>
 
