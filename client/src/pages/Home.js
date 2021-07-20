@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import FooterMessage from '../components/FooterMessage';
 import logo from '../logo.png';
 
 const Home = () => {
@@ -31,7 +30,6 @@ const Home = () => {
           </Card>
         </Col>
       </Row>
-      <FooterMessage heading={"JORT Cares About Your Privacy"} message={"JORT is taking great strides to ensure your privacy is protected above all else. Please visit our privacy policy to learn more."} buttonLink={"privacy"} />
     </Container>
   );
 }

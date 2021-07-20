@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css"
 import { Router, Route } from 'react-router-dom';
 import history from './history';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/items/:id" component={ItemPage} />
       <Route path="/seller" component={SellerPage} />
       <Route path="/profile" component={Profile} />
+      <Footer />
     </Router>
   );
 }

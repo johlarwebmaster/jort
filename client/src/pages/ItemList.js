@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import FooterMessage from '../components/FooterMessage';
 import { Row, Col, Container, ProgressBar, Card, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { fetchItems, bidItem } from '../actions';
@@ -79,7 +78,6 @@ class ItemList extends React.Component {
                         </Row>
                     )
                 })}
-                <FooterMessage heading={"TERMS AND CONDITIONS"} message={"Every item, product, and service sold on JORT is subject to our Terms of Service. Please review our terms and conditions if you have any questions."} buttonLink={"buyerTerms"} />
             </Container>
         )
     }
