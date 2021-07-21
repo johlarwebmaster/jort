@@ -9,7 +9,7 @@ class ItemList extends React.Component {
         this.props.fetchItems();
     }
 
-    buttonClick = (id, open, bid, user, userName) => {
+    bidClick = (id, open, bid, user, userName) => {
         const newBid = parseFloat(open) + parseFloat(bid);
         this.props.bidItem(id, {openingBid: newBid.toFixed(2), buyerId: user, buyerName: userName });
     }
@@ -41,7 +41,7 @@ class ItemList extends React.Component {
                                             <Col md={6} className="text-right">
                                                 {item.buyerName &&
                                                     <div className="float-left">
-                                                        Current buyer: {item.buyerName}
+                                                        {item.buyerName} is winning!
                                                     </div>
                                                 }
                                                 <div className="float-right">
@@ -50,9 +50,9 @@ class ItemList extends React.Component {
                                                 </div>
                                             </Col>
                                             <Col md={2}>
-                                                {item.sellerName === this.props.userName ?
+                                                {item.sellerId === this.props.currentUserId ?
                                                     <Button disabled>Bid</Button> :
-                                                    <Button variant="primary" className="increase-bid" onClick={() => this.buttonClick(item.id, item.openingBid, item.increment, this.props.currentUserId, this.props.userName)}>
+                                                    <Button variant="primary" className="increase-bid" onClick={() => this.bidClick(item.id, item.openingBid, item.increment, this.props.currentUserId, this.props.firstName)}>
                                                         Bid
                                                     </Button>
                                                 }
@@ -64,11 +64,8 @@ class ItemList extends React.Component {
                                         </Row>
                                         <Card.Footer>
                                             <Row>
-                                                <Col md={9}>
-                                                    <ProgressBar animated now={90} />
-                                                </Col>
-                                                <Col md={3}>
-                                                    &nbsp;
+                                                <Col>
+                                                    <ProgressBar animated now={100} />
                                                 </Col>
                                             </Row>
                                         </Card.Footer>
@@ -88,7 +85,7 @@ const mapStateToProps = (state) => {
         items: Object.values(state.items),
         isSignedIn: state.auth.isSignedIn,
         currentUserId: state.auth.userId,
-        userName: state.auth.fullName
+        firstName: state.auth.firstName
     }
 };
 

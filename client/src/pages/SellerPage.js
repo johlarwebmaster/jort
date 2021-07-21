@@ -17,9 +17,10 @@ class ItemPage extends React.Component {
                 readyToSell: false,
                 timerSet: false,
                 bidCountdown: 120000,
+                bidTime: 0,
                 timerUp: false,
                 increment: '',
-                sellerName: '',
+                sellerId: '',
                 buyerId: '',
                 buyerName: '',
                 file1: '',
@@ -42,7 +43,7 @@ class ItemPage extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({ values: { ...this.state.values, sellerName: this.props.fullName } });
+        this.setState({ values: { ...this.state.values, sellerId: this.props.currentUserId } });
         this.props.addItem(this.state.values);
     }
 

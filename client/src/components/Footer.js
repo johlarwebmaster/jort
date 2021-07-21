@@ -9,14 +9,14 @@ const Footer = () => {
 
     return (
         <div>
-            <Navbar fixed="bottom" className="border-top">
+            <Navbar fixed="bottom" className="border-top bg-white">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/list">Items</Nav.Link>
                     <Nav.Link href="/seller">Seller</Nav.Link>
                     <Nav.Link onClick={() => setPrivacy(true)}>Privacy</Nav.Link>
                     <Nav.Link onClick={() => setTerms(true)}>Terms of Service</Nav.Link>
-                    <Nav.Link href="#">Cart</Nav.Link>
+                    <Nav.Link href="#">Tutorial</Nav.Link>
                 </Nav>
             </Navbar>
             <Modal show={privacy} onHide={() => setPrivacy(false)} backdrop="static" size="lg">
