@@ -20,7 +20,7 @@ class GoogleAuth extends React.Component {
 
     onAuthChange = (isSignedIn) => {
         if (isSignedIn) {
-            this.props.signIn(this.auth.currentUser.get().getId(), this.auth.currentUser.get().getBasicProfile().getGivenName(), this.auth.currentUser.get().getBasicProfile().getFamilyName(), this.auth.currentUser.get().getBasicProfile().getName(), this.auth.currentUser.get().getBasicProfile().getEmail());
+            this.props.signIn(this.auth.currentUser.get().getId(), this.auth.currentUser.get().getBasicProfile().getGivenName(), this.auth.currentUser.get().getBasicProfile().getFamilyName(), this.auth.currentUser.get().getBasicProfile().getName(), this.auth.currentUser.get().getBasicProfile().getEmail(), this.auth.currentUser.get().getBasicProfile().getImageUrl());
         } else {
             this.props.signOut();
         }
@@ -75,7 +75,7 @@ class GoogleAuth extends React.Component {
 };
 
 const mapStateToProps = (state) => {
-    return { isSignedIn: state.auth.isSignedIn, userId: state.auth.userId, firstName: state.auth.firstName, lastName: state.auth.lastName, fullName: state.auth.fullName };
+    return { isSignedIn: state.auth.isSignedIn, userId: state.auth.userId, firstName: state.auth.firstName, lastName: state.auth.lastName, fullName: state.auth.fullName, email: state.auth.email, imageUrl: state.auth.imageUrl };
 };
 
 export default connect(mapStateToProps, { signIn, signOut })(GoogleAuth);

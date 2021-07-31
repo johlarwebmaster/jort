@@ -1,9 +1,9 @@
 import items from "../apis/items";
 
-export const signIn = (userId, firstName, lastName, fullName) => {
+export const signIn = (userId, firstName, lastName, fullName, email, imageUrl) => {
     return {
         type: 'SIGN_IN',
-        payload: { userId, firstName, lastName, fullName }
+        payload: { userId, firstName, lastName, fullName, email, imageUrl }
     };
 };
 
