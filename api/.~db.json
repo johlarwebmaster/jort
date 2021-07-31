@@ -12,7 +12,12 @@
       "sellTimer": "Thu Jul 15 2021 07:22:00 GMT-0600 (Mountain Daylight Time)",
       "timerSet": true,
       "increment": "10.00",
-      "id": 1
+      "id": 1,
+      "newBid": "220.00",
+      "buyerId": "100201121835101672627",
+      "buyerName": "Raul",
+      "bidTimer": 24,
+      "bidCount": 0
     },
     {
       "title": "Yamaha Pw50",
@@ -40,7 +45,12 @@
       "sellTimer": "Thu Jul 15 2021 09:22:00 GMT-0600 (Mountain Daylight Time)",
       "timerSet": true,
       "increment": "5.00",
-      "id": 3
+      "id": 3,
+      "newBid": "55.00",
+      "buyerId": "100201121835101672627",
+      "buyerName": "Raul",
+      "bidTimer": 98,
+      "bidCount": 0
     },
     {
       "title": "New Balance Tennis Shoes",
