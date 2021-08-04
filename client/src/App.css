@@ -2,32 +2,64 @@
 @import url(https://fonts.googleapis.com/css?family=Pirata+One);
 
 body {
-    font-family: "Lobster" !important;
+  font-family: "Lobster" !important;
 }
 
 .App {
-    margin-top: 110px;
-    margin-bottom: 70px;
+  margin-top: 110px;
+  margin-bottom: 70px;
 }
 
-.btn-primary, .bg-primary {
-    background-color: #a33325 !important;
-    color: #ffffff;
+.btn-primary,
+.bg-primary {
+  background-color: #a33325 !important;
+  color: #ffffff;
 }
 
-.btn-secondary, .bg-secondary {
-    background-color: #5c4d6a !important;
-    color: #ffffff;
+.btn-secondary,
+.bg-secondary {
+  background-color: #5c4d6a !important;
+  color: #ffffff;
 }
 
 .text-primary {
-    color: #a33325 !important;
+  color: #a33325 !important;
 }
 
 .text-secondary {
-    color: #5c4d6a !important;
+  color: #5c4d6a !important;
 }
 
 .title-text {
-    font-family: Pirata One;
+  font-family: Pirata One;
+}
+
+.modal {
+  /* position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%; */
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.modal_content {
+  background-color: white;
+  position: absolute;
+  top: 10%;
+  left: 70%;
+  padding: 20px;
+  border-radius: 5px;
+  border: 2px solid black;
+  z-index: 1;
+  width: 100%;
+}
+
+.close {
+  color: Black;
+  float: right;
+}
+
+.close:hover {
+  color: cyan;
+  cursor: pointer;
 }
