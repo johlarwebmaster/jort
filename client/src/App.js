@@ -1,7 +1,6 @@
 import React from 'react';
 import Home from './pages/Home';
 import ItemList from './pages/ItemList';
-import ItemPage from './pages/ItemPage';
 import SellerPage from './pages/SellerPage';
 import Profile from './pages/Profile';
 import Header from './components/Header';
@@ -17,7 +16,6 @@ function App() {
       <Route path="/" exact component={Home} />
       <Header />
       <Route path="/list" component={ItemList} />
-      <Route path="/items/:id" component={ItemPage} />
       <Route path="/seller" component={SellerPage} />
       <Route path="/profile" component={Profile} />
       <Footer />

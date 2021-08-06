@@ -9,7 +9,7 @@ const ItemList = props => {
 
     useEffect(() => {
         fetchItems();
-    }, [])
+    }, []);
 
     return (
         <Container fluid className="App">
@@ -31,8 +31,12 @@ const mapStateToProps = (state) => {
     return {
         items: Object.values(state.items),
         isSignedIn: state.auth.isSignedIn,
-        currentUserId: state.auth.userId,
-        firstName: state.auth.firstName
+        userId: state.auth.userId,
+        firstName: state.auth.firstName,
+        lastName: state.auth.lastName,
+        fullName: state.auth.fullName,
+        email: state.auth.email,
+        imageUrl: state.auth.imageUrl
     }
 };
 

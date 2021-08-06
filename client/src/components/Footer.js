@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Modal } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import PrivacyContent from './PrivacyContent';
 import BuyerContent from './BuyerContent';
 
 const Footer = () => {
+    const history = useHistory();
     const [privacy, setPrivacy] = useState(false);
     const [terms, setTerms] = useState(false);
 
@@ -12,8 +14,8 @@ const Footer = () => {
             <Navbar fixed="bottom" className="border-top bg-white">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/list">Items</Nav.Link>
-                    <Nav.Link href="/seller">Seller</Nav.Link>
+                    <Nav.Link onClick={() => history.push('/list')}>Items</Nav.Link>
+                    <Nav.Link onClick={() => history.push('/seller')}>Seller</Nav.Link>
                     <Nav.Link onClick={() => setPrivacy(true)}>Privacy</Nav.Link>
                     <Nav.Link onClick={() => setTerms(true)}>Terms of Service</Nav.Link>
                     <Nav.Link href="#">Tutorial</Nav.Link>

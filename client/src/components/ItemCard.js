@@ -12,8 +12,16 @@ const ItemCard = props => {
     
     useEffect(() => {
         fetchItem(props.item.id);
-        if (props.item.bidTimer && props.item.bidTimer > 0) {
-            const interval = setInterval(() => bidItem(props.item.id, {bidTimer: props.item.bidTimer - 1}), 100);
+        const currentDate = new Date();
+        const postDate = new Date(props.item.sellTimer);
+        var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
+        if (hours >= 6) {
+            bidItem(props.item.id, {timerSet: true});
+        }
+        if (props.item.timerSet === true && props.item.bidTimer > 0) {
+            const interval = setInterval(() => {
+                bidItem(props.item.id, {bidTimer: props.item.bidTimer - 1});
+            }, 100);
             return () => clearInterval(interval);
         } else {
             if (props.item.bidCount < 2) {
@@ -119,7 +127,10 @@ const mapStateToProps = (state, ownProps) => {
         item: state.items[ownProps.item],
         isSignedIn: state.auth.isSignedIn,
         currentUserId: state.auth.userId,
-        firstName: state.auth.firstName
+        firstName: state.auth.firstName,
+        lastName: state.auth.lastName,
+        email: state.auth.email,
+        imageUrl: state.auth.imageUrl
     }
 };
 
