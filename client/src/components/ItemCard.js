@@ -36,29 +36,6 @@ const ItemCard = (props) => {
         }
     }, [props.item.bidTimer])
 
-  useEffect(() => {
-    fetchItem(props.item.id);
-    if (props.item.bidTimer && props.item.bidTimer > 0) {
-      const interval = setInterval(
-        () => bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 }),
-        100
-      );
-      return () => clearInterval(interval);
-    } else {
-      if (props.item.bidCount < 2) {
-        bidItem(props.item.id, {
-          bidTimer: 100,
-          bidCount: props.item.bidCount + 1,
-        });
-      } else if (props.item.bidCount === 2 && props.item.buyerId) {
-        bidItem(props.item.id, { itemSold: true });
-        if (props.currentUserId === props.item.buyerId) {
-          setShow(true);
-        }
-      }
-    }
-  }, [props.item.bidTimer]);
-
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
       bidItem(id, {
