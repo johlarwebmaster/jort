@@ -2,39 +2,45 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, ProgressBar, Card, Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { fetchItem, bidItem } from "../actions";
-import PopUp from "./PopUp";
 
 const ItemCard = (props) => {
   const { fetchItem, bidItem } = props;
   const [show, setShow] = useState(false);
-  const [pop, setPop] = useState(false);
 
-    const handleClose = () => setShow(false);
-    
-    useEffect(() => {
-        fetchItem(props.item.id);
-        const currentDate = new Date();
-        const postDate = new Date(props.item.sellTimer);
-        var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
-        if (hours >= 6) {
-            bidItem(props.item.id, {timerSet: true});
+  const handleClose = () => setShow(false);
+
+  //for more info modal
+  const [showInfo, setInfoShow] = useState(false);
+  const handleInfoClose = () => setInfoShow(false);
+  const handleInfoShow = () => setInfoShow(true);
+
+  useEffect(() => {
+    fetchItem(props.item.id);
+    const currentDate = new Date();
+    const postDate = new Date(props.item.sellTimer);
+    var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
+    if (hours >= 6) {
+      bidItem(props.item.id, { timerSet: true });
+    }
+    if (props.item.timerSet === true && props.item.bidTimer > 0) {
+      const interval = setInterval(() => {
+        bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
+      }, 100);
+      return () => clearInterval(interval);
+    } else {
+      if (props.item.bidCount < 2) {
+        bidItem(props.item.id, {
+          bidTimer: 100,
+          bidCount: props.item.bidCount + 1,
+        });
+      } else if (props.item.bidCount === 2 && props.item.buyerId) {
+        bidItem(props.item.id, { itemSold: true });
+        if (props.currentUserId === props.item.buyerId) {
+          setShow(true);
         }
-        if (props.item.timerSet === true && props.item.bidTimer > 0) {
-            const interval = setInterval(() => {
-                bidItem(props.item.id, {bidTimer: props.item.bidTimer - 1});
-            }, 100);
-            return () => clearInterval(interval);
-        } else {
-            if (props.item.bidCount < 2) {
-                bidItem(props.item.id, {bidTimer: 100, bidCount: props.item.bidCount + 1});
-            } else if (props.item.bidCount === 2 && props.item.buyerId) {
-                bidItem(props.item.id, {itemSold: true});
-                if (props.currentUserId === props.item.buyerId) {
-                    setShow(true);
-                }
-            }
-        }
-    }, [props.item.bidTimer])
+      }
+    }
+  }, [props.item.bidTimer]);
 
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
@@ -56,11 +62,6 @@ const ItemCard = (props) => {
       });
     }
   };
-
-  const togglePop = () => {
-    pop ? setPop(false) : setPop(true);
-  };
-
   return (
     <>
       <Card>
@@ -73,15 +74,20 @@ const ItemCard = (props) => {
             <Row>
               <Col md={4}>
                 <div>
-                  <div className="btn" onClick={togglePop}>
-                    <Button variant="primary">More Info</Button>
-                  </div>
-                  {pop ? (
-                    <PopUp
-                      toggle={togglePop}
-                      description={props.item.description}
-                    />
-                  ) : null}
+                  <Button variant="primary" onClick={handleInfoShow}>
+                    More Info
+                  </Button>
+                  <Modal show={showInfo} onHide={handleInfoClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>{props.item.title}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{props.item.description}</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleInfoClose}>
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                 </div>
               </Col>
               <Col md={6} className="text-right">
@@ -206,15 +212,15 @@ const ItemCard = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        item: state.items[ownProps.item],
-        isSignedIn: state.auth.isSignedIn,
-        currentUserId: state.auth.userId,
-        firstName: state.auth.firstName,
-        lastName: state.auth.lastName,
-        email: state.auth.email,
-        imageUrl: state.auth.imageUrl
-    }
+  return {
+    item: state.items[ownProps.item],
+    isSignedIn: state.auth.isSignedIn,
+    currentUserId: state.auth.userId,
+    firstName: state.auth.firstName,
+    lastName: state.auth.lastName,
+    email: state.auth.email,
+    imageUrl: state.auth.imageUrl,
+  };
 };
 
 export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);

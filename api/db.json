@@ -12,7 +12,12 @@
       "sellTimer": "Thu Aug 5 2021 09:22:00 GMT-0600 (Mountain Daylight Time)",
       "timerSet": true,
       "increment": "5.00",
-      "id": 3
+      "id": 3,
+      "newBid": "60.00",
+      "buyerId": null,
+      "buyerName": null,
+      "bidTimer": 0,
+      "bidCount": 2
     },
     {
       "title": "New Balance Tennis Shoes",
@@ -24,7 +29,7 @@
       "sellerId": "8675309",
       "category": "clothing",
       "sellTimer": "Thu Aug 5 2021 10:22:00 GMT-0600 (Mountain Daylight Time)",
-      "timerSet": false,
+      "timerSet": true,
       "increment": "1.00",
       "id": 4
     },
@@ -38,7 +43,7 @@
       "sellerId": "8675309",
       "category": "furniture",
       "sellTimer": "Thu Aug 5 2021 10:22:00 GMT-0600 (Mountain Daylight Time)",
-      "timerSet": false,
+      "timerSet": true,
       "increment": "10.00",
       "id": 5
     },
