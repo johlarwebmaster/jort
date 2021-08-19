@@ -4,7 +4,7 @@
       "title": "Samsung Gear S2",
       "description": "Great watch, but I upgraded to an iPhone recently, so I have a no use for it. This is the model with LTE as well as the built in speaker. Text me if you have any questions!",
       "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "currentBid": "55.00",
+      "currentBid": "60.00",
       "imagepath": "https://img.ksl.com/mx/mplace-classifieds.ksl.com/2900707-1613864158-496905.jpg?filter=marketplace/664x500",
       "imagealt": "This is an alt tag",
       "sellerId": "8675309",
@@ -12,7 +12,12 @@
       "sellTimer": "Thu Aug 5 2021 09:22:00 GMT-0600 (Mountain Daylight Time)",
       "timerSet": true,
       "increment": "5.00",
-      "id": 3
+      "id": 3,
+      "newBid": "65.00",
+      "buyerId": "100201121835101672627",
+      "buyerName": "Raul",
+      "bidTimer": 64,
+      "bidCount": 1
     },
     {
       "title": "New Balance Tennis Shoes",
@@ -24,9 +29,14 @@
       "sellerId": "8675309",
       "category": "clothing",
       "sellTimer": "Thu Aug 5 2021 10:22:00 GMT-0600 (Mountain Daylight Time)",
-      "timerSet": false,
+      "timerSet": true,
       "increment": "1.00",
-      "id": 4
+      "id": 4,
+      "newBid": "26.00",
+      "buyerId": "100201121835101672627",
+      "buyerName": "Raul",
+      "bidTimer": 80,
+      "bidCount": 0
     },
     {
       "title": "Microfiber sectional and ottoman",
@@ -38,7 +48,7 @@
       "sellerId": "8675309",
       "category": "furniture",
       "sellTimer": "Thu Aug 5 2021 10:22:00 GMT-0600 (Mountain Daylight Time)",
-      "timerSet": false,
+      "timerSet": true,
       "increment": "10.00",
       "id": 5
     },
