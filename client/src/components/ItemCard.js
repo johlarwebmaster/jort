@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, ProgressBar, Card, Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { fetchItem, bidItem } from "../actions";
-import PopUp from "./PopUp";
 
 const ItemCard = (props) => {
   const { fetchItem, bidItem } = props;
   const [show, setShow] = useState(false);
-  const [pop, setPop] = useState(false);
 
     const handleClose = () => setShow(false);
     
@@ -59,11 +57,6 @@ const ItemCard = (props) => {
       });
     }
   };
-
-  const togglePop = () => {
-    pop ? setPop(false) : setPop(true);
-  };
-
   return (
     <>
       <Card>
@@ -76,15 +69,20 @@ const ItemCard = (props) => {
             <Row>
               <Col md={4}>
                 <div>
-                  <div className="btn" onClick={togglePop}>
-                    <Button variant="primary">More Info</Button>
-                  </div>
-                  {pop ? (
-                    <PopUp
-                      toggle={togglePop}
-                      description={props.item.description}
-                    />
-                  ) : null}
+                  <Button variant="primary" onClick={handleInfoShow}>
+                    More Info
+                  </Button>
+                  <Modal show={showInfo} onHide={handleInfoClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>{props.item.title}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{props.item.description}</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleInfoClose}>
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                 </div>
               </Col>
               <Col md={6} className="text-right">
@@ -209,15 +207,15 @@ const ItemCard = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        item: state.items[ownProps.item],
-        isSignedIn: state.auth.isSignedIn,
-        currentUserId: state.auth.userId,
-        firstName: state.auth.firstName,
-        lastName: state.auth.lastName,
-        email: state.auth.email,
-        imageUrl: state.auth.imageUrl
-    }
+  return {
+    item: state.items[ownProps.item],
+    isSignedIn: state.auth.isSignedIn,
+    currentUserId: state.auth.userId,
+    firstName: state.auth.firstName,
+    lastName: state.auth.lastName,
+    email: state.auth.email,
+    imageUrl: state.auth.imageUrl,
+  };
 };
 
 export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);
