@@ -6,36 +6,40 @@ import { fetchItem, bidItem } from "../actions";
 const ItemCard = (props) => {
   const { fetchItem, bidItem } = props;
   const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
-    const handleClose = () => setShow(false);
-    
-    useEffect(() => {
-        fetchItem(props.item.id);
-        const currentDate = new Date();
-        const postDate = new Date(props.item.sellTimer);
-        var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
-        if (hours >= 6) {
-            bidItem(props.item.id, {timerSet: true});
-        }
-    }, []);
+  //for more info modal
+  const [showInfo, setInfoShow] = useState(false);
+  const handleInfoClose = () => setInfoShow(false);
+  const handleInfoShow = () => setInfoShow(true);
 
-    useEffect(() => {
-        if (props.item.timerSet === true && props.item.bidTimer > 0) {
-            var interval = setInterval(() => {
-                bidItem(props.item.id, {bidTimer: props.item.bidTimer - 1});
-            }, 100);
-            return () => clearInterval(interval);
-        } else {
-            if (props.item.bidCount < 2) {
-                bidItem(props.item.id, {bidTimer: 100, bidCount: props.item.bidCount + 1});
-            } else if (props.item.bidCount === 2 && props.item.buyerId) {
-                bidItem(props.item.id, {itemSold: true});
-                if (props.currentUserId === props.item.buyerId) {
-                    setShow(true);
-                }
-            }
+  useEffect(() => {
+    fetchItem(props.item.id);
+    const currentDate = new Date();
+    const postDate = new Date(props.item.sellTimer);
+    var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
+    if (hours >= 6) {
+      bidItem(props.item.id, { timerSet: true });
+    }
+    if (props.item.timerSet === true && props.item.bidTimer > 0) {
+      const interval = setInterval(() => {
+        bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
+      }, 100);
+      return () => clearInterval(interval);
+    } else {
+      if (props.item.bidCount < 2) {
+        bidItem(props.item.id, {
+          bidTimer: 100,
+          bidCount: props.item.bidCount + 1,
+        });
+      } else if (props.item.bidCount === 2 && props.item.buyerId) {
+        bidItem(props.item.id, { itemSold: true });
+        if (props.currentUserId === props.item.buyerId) {
+          setShow(true);
         }
-    }, [props.item.bidTimer]);
+      }
+    }
+  }, [props.item.bidTimer]);
 
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
@@ -58,7 +62,7 @@ const ItemCard = (props) => {
     }
   };
   return (
-    <>
+    <div>
       <Card>
         <Card.Header as="h4" className="bg-secondary title-text">
           {props.item.title}
@@ -202,7 +206,7 @@ const ItemCard = (props) => {
           Please fill out the information below to claim your treasure!
         </h3>
       </Modal>
-    </>
+    </div>
   );
 };
 
