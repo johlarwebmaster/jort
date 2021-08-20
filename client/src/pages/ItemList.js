@@ -19,7 +19,7 @@ const ItemList = props => {
                         &nbsp;
                     </Col>
                     <Col md={9}>
-                        <ItemCard item={i.id} />
+                        <ItemCard item={i} />
                     </Col>
                 </Row>
             ))}

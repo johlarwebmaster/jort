@@ -39,7 +39,15 @@ class ItemPage extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({ values: { ...this.state.values, sellerId: this.props.currentUserId } });
+        var r4 = function() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        };
+        var title = this.state.values.title;
+        var t4 = title.substring(0, 4);
+        var seller = this.props.currentUserId;
+        var s4 = seller.substring(0, 4);
+        var itemId = s4()+"-"+t4()+"-"+r4()+r4()+"-"+r4()+r4()+r4();
+        this.setState({ values: { ...this.state.values, sellerId: this.props.currentUserId, id: itemId } });
         this.props.addItem(this.state.values);
         setTimeout(() => {
             this.props.history.push("/list");
