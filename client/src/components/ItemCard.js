@@ -18,28 +18,30 @@ const ItemCard = (props) => {
     const currentDate = new Date();
     const postDate = new Date(props.item.sellTimer);
     var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
-    if (hours >= 6) {
-      bidItem(props.item.id, { timerSet: true });
-    }
-    if (props.item.timerSet === true && props.item.bidTimer > 0) {
-      const interval = setInterval(() => {
-        bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
-      }, 100);
-      return () => clearInterval(interval);
-    } else {
-      if (props.item.bidCount < 2) {
-        bidItem(props.item.id, {
-          bidTimer: 100,
-          bidCount: props.item.bidCount + 1,
-        });
-      } else if (props.item.bidCount === 2 && props.item.buyerId) {
-        bidItem(props.item.id, { itemSold: true });
-        if (props.currentUserId === props.item.buyerId) {
-          setShow(true);
-        }
-      }
-    }
-  }, [props.item.bidTimer]);
+    // if (hours >= 6) {
+    //   bidItem(props.item.id, { timerSet: true });
+    // }
+  }, []);
+  // useEffect(() => {
+  //   if (props.item.timerSet === true && props.item.bidTimer > 0) {
+  //     const interval = setInterval(() => {
+  //       bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
+  //     }, 100);
+  //     return () => clearInterval(interval);
+  //   } else {
+  //     if (props.item.bidCount < 2) {
+  //       bidItem(props.item.id, {
+  //         bidTimer: 100,
+  //         bidCount: props.item.bidCount + 1,
+  //       });
+  //     } else if (props.item.bidCount === 2 && props.item.buyerId) {
+  //       bidItem(props.item.id, { itemSold: true });
+  //       if (props.currentUserId === props.item.buyerId) {
+  //         setShow(true);
+  //       }
+  //     }
+  //   }
+  // }, [props.item.bidTimer]);
 
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
@@ -192,20 +194,20 @@ const ItemCard = (props) => {
             <h1 className="display-1 text-center">This item is sold</h1>
           </Card.Body>
         )}
-      </Card>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-        centered
-        dialogClassName="modal-90w"
-      >
-        <h1 className="text-center">You won!</h1>
-        <h3 className="text-center">
-          Please fill out the information below to claim your treasure!
-        </h3>
-      </Modal>
+        </Card>
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          centered
+          dialogClassName="modal-90w"
+        >
+          <h1 className="text-center">You won!</h1>
+          <h3 className="text-center">
+            Please fill out the information below to claim your treasure!
+          </h3>
+        </Modal>
     </div>
   );
 };

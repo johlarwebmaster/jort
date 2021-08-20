@@ -13,13 +13,13 @@ const ItemList = props => {
 
     return (
         <Container fluid className="App">
-            {props.items.map(item => (
-                <Row className="my-2" key={item.id}>
+            {props.items.map((i, x) => (
+                <Row className="my-2" key={x}>
                     <Col md={3}>
                         &nbsp;
                     </Col>
                     <Col md={9}>
-                        <ItemCard item={item.id} />
+                        <ItemCard item={i.id} />
                     </Col>
                 </Row>
             ))}
