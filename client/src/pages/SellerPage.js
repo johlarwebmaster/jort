@@ -41,6 +41,9 @@ class ItemPage extends React.Component {
         e.preventDefault();
         this.setState({ values: { ...this.state.values, sellerId: this.props.currentUserId } });
         this.props.addItem(this.state.values);
+        setTimeout(() => {
+            this.props.history.push("/list");
+        }, 2500);
     }
 
     myChangeHandler = (e) => {
