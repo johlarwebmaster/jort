@@ -3,7 +3,7 @@ import { Modal, ListGroup, Button } from 'react-bootstrap';
 
 const PrivacyContent = props => {
     return (
-        <>
+        <div>
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h1>Your Privacy is Important</h1>
@@ -40,7 +40,7 @@ const PrivacyContent = props => {
                     Okay
                 </Button>
             </Modal.Footer>
-        </>
+        </div>
     )
 }
 

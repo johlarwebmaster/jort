@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 const BuyerContent = props => {
     return (
-        <>
+        <div>
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h1>JORT Terms of Service</h1>
@@ -50,7 +50,7 @@ const BuyerContent = props => {
                     Okay
                 </Button>
             </Modal.Footer>
-        </>
+        </div>
     )
 }
 
