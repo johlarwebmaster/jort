@@ -20,21 +20,17 @@ export const fetchItems = () => async dispatch => {
 };
 
 export const fetchItem = (id) => async dispatch => {
-    console.log(id)
-
     const response = await items.get(`/items.json?orderBy="id"&startAt="${id}"&endAt="${id}"`);
-
-    console.log(response.data)
 
     dispatch({ type: 'FETCH_ITEM', payload: response.data });
 };
 
-export const addItem = formValues => async dispatch => {
-    items.post('/items.json', formValues);
+export const addItem = (id, formValues) => async dispatch => {
+    items.put(`/items/${id}.json`, formValues);
 };
 
 export const bidItem = (id, itemValues) => async dispatch => {
-    const response = await items.patch(`/items/${id}.json`, itemValues);
+    const response = await items.patch(`/items.json?orderBy="id"&startAt="${id}"&endAt="${id}"`, itemValues);
 
     dispatch({ type: 'BID_ITEM', payload: response.data });  
 };

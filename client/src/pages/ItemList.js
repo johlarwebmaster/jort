@@ -13,8 +13,9 @@ const ItemList = props => {
 
     return (
         <Container fluid className="App">
-            {props.items.map((i, x) => (
-                <Row className="my-2" key={x}>
+            {props.items.map(i => {
+                if (i.id) return (
+                <Row className="my-2" key={i.id}>
                     <Col md={3}>
                         &nbsp;
                     </Col>
@@ -22,7 +23,7 @@ const ItemList = props => {
                         <ItemCard item={i} />
                     </Col>
                 </Row>
-            ))}
+            )})}
         </Container>
     )
 }

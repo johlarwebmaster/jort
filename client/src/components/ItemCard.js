@@ -18,9 +18,9 @@ const ItemCard = (props) => {
     const currentDate = new Date();
     const postDate = new Date(props.item.sellTimer);
     var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
-    // if (hours >= 6) {
-    //   bidItem(props.item.id, { timerSet: true });
-    // }
+    if (hours >= 6) {
+      bidItem(props.item.id, { timerSet: true });
+    }
   }, []);
   // useEffect(() => {
   //   if (props.item.timerSet === true && props.item.bidTimer > 0) {
