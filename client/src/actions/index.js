@@ -20,7 +20,11 @@ export const fetchItems = () => async dispatch => {
 };
 
 export const fetchItem = (id) => async dispatch => {
-    const response = await items.get(`/items/${id}.json`);
+    console.log(id)
+
+    const response = await items.get(`/items.json?orderBy="id"&startAt="${id}"&endAt="${id}"`);
+
+    console.log(response.data)
 
     dispatch({ type: 'FETCH_ITEM', payload: response.data });
 };

@@ -213,10 +213,8 @@ const ItemCard = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
-  console.log(state.items);
   return {
-    item: state.items[ownProps.item],
+    item: ownProps.item,
     isSignedIn: state.auth.isSignedIn,
     currentUserId: state.auth.userId,
     firstName: state.auth.firstName,
