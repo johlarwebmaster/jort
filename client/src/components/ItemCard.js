@@ -21,8 +21,6 @@ const ItemCard = (props) => {
     if (hours >= 6) {
       bidItem(props.item.id, { timerSet: true });
     }
-  }, []);
-  useEffect(() => {
     if (props.item.timerSet === true && props.item.bidTimer > 0) {
       const interval = setInterval(() => {
         bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
@@ -41,7 +39,7 @@ const ItemCard = (props) => {
         }
       }
     }
-  }, [props.item.bidTimer]);
+  }, []);
 
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
