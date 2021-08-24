@@ -22,26 +22,26 @@ const ItemCard = (props) => {
       bidItem(props.item.id, { timerSet: true });
     }
   }, []);
-  // useEffect(() => {
-  //   if (props.item.timerSet === true && props.item.bidTimer > 0) {
-  //     const interval = setInterval(() => {
-  //       bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
-  //     }, 100);
-  //     return () => clearInterval(interval);
-  //   } else {
-  //     if (props.item.bidCount < 2) {
-  //       bidItem(props.item.id, {
-  //         bidTimer: 100,
-  //         bidCount: props.item.bidCount + 1,
-  //       });
-  //     } else if (props.item.bidCount === 2 && props.item.buyerId) {
-  //       bidItem(props.item.id, { itemSold: true });
-  //       if (props.currentUserId === props.item.buyerId) {
-  //         setShow(true);
-  //       }
-  //     }
-  //   }
-  // }, [props.item.bidTimer]);
+  useEffect(() => {
+    if (props.item.timerSet === true && props.item.bidTimer > 0) {
+      const interval = setInterval(() => {
+        bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
+      }, 100);
+      return () => clearInterval(interval);
+    } else {
+      if (props.item.bidCount < 2) {
+        bidItem(props.item.id, {
+          bidTimer: 100,
+          bidCount: props.item.bidCount + 1,
+        });
+      } else if (props.item.bidCount === 2 && props.item.buyerId) {
+        bidItem(props.item.id, { itemSold: true });
+        if (props.currentUserId === props.item.buyerId) {
+          setShow(true);
+        }
+      }
+    }
+  }, [props.item.bidTimer]);
 
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
@@ -71,7 +71,7 @@ const ItemCard = (props) => {
         </Card.Header>
         {props.item.itemSold !== true ? (
           <Card.Body>
-            <Card.Text>{props.item.shortDesc}</Card.Text>
+            <Card.Text>{props.item.shortdesc}</Card.Text>
             <Row>
               <Col md={4}>
                 <div>
@@ -99,7 +99,7 @@ const ItemCard = (props) => {
                 )}
                 <div className="float-right">
                   Current Bid:
-                  <br />
+                  <br />$
                   {props.item.newBid ? (
                     <span>{props.item.newBid}</span>
                   ) : (

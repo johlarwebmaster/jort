@@ -11,7 +11,7 @@ class ItemPage extends React.Component {
                 title: '',
                 description: '',
                 shortdesc: '',
-                openingBid: '',
+                currentBid: '',
                 category: 'select',
                 sellTimer: Date().toLocaleString(),
                 timerSet: false,
@@ -115,7 +115,7 @@ class ItemPage extends React.Component {
                                 <InputGroup.Prepend>
                                     <InputGroup.Text>$</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <Form.Control type="number" name="openingBid" id="openingBid" bsSize="lg" required value={this.state.values.openingBid} onChange={this.myChangeHandler} />
+                                <Form.Control type="number" name="currentBid" id="currentBid" bsSize="lg" required value={this.state.values.currentBid} onChange={this.myChangeHandler} />
                             </InputGroup>
                         </Form.Group>
                         <Form.Group>
