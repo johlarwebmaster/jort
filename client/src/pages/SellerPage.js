@@ -27,7 +27,8 @@ class ItemPage extends React.Component {
                 file6: '',
                 file7: '',
                 file8: '',
-                file9: ''
+                file9: '',
+                id: ''
             },
             agreed: false,
             show: false
@@ -46,10 +47,10 @@ class ItemPage extends React.Component {
         var t4 = title.substring(0, 4);
         var seller = this.props.currentUserId;
         var s4 = seller.substring(0, 4);
-        var itemId = s4()+"-"+t4()+"-"+r4()+r4()+"-"+r4()+r4()+r4();
+        var itemId = s4 + "-" + t4 + "-" + r4() + r4() + "-" + r4() + r4() + r4();
         this.setState({ values: { ...this.state.values, sellerId: this.props.currentUserId, id: itemId } });
-        this.props.addItem(this.state.values.id, this.state.values);
         setTimeout(() => {
+            this.props.addItem(itemId, this.state.values);
             this.props.history.push("/list");
         }, 2500);
     }

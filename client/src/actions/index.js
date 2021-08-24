@@ -20,7 +20,7 @@ export const fetchItems = () => async dispatch => {
 };
 
 export const fetchItem = (id) => async dispatch => {
-    const response = await items.get(`/items.json?orderBy="id"&startAt="${id}"&endAt="${id}"`);
+    const response = await items.get(`/items/${id}.json`);
 
     dispatch({ type: 'FETCH_ITEM', payload: response.data });
 };
@@ -30,7 +30,7 @@ export const addItem = (id, formValues) => async dispatch => {
 };
 
 export const bidItem = (id, itemValues) => async dispatch => {
-    const response = await items.patch(`/items.json?orderBy="id"&startAt="${id}"&endAt="${id}"`, itemValues);
+    const response = await items.patch(`/items/${id}.json`, itemValues);
 
     dispatch({ type: 'BID_ITEM', payload: response.data });  
 };
