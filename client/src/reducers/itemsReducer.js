@@ -13,6 +13,8 @@ export default (state = {}, action) => {
             };
         case 'BID_ITEM':
             return { ...state, [action.payload.id]: action.payload };
+        case 'BID_TIME':
+            return { ...state, [action.payload.id]: action.payload };
         default:
             return state;
     }

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, ProgressBar, Card, Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { fetchItem, bidItem } from "../actions";
+import { fetchItem, bidItem, bidTime } from "../actions";
 
 const ItemCard = (props) => {
-  const { fetchItem, bidItem } = props;
+  const { fetchItem, bidItem, bidTime } = props;
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
@@ -21,25 +21,27 @@ const ItemCard = (props) => {
     if (hours >= 6) {
       bidItem(props.item.id, { timerSet: true });
     }
+  }, []);
+  useEffect(() => {
     if (props.item.timerSet === true && props.item.bidTimer > 0) {
       const interval = setInterval(() => {
-        bidItem(props.item.id, { bidTimer: props.item.bidTimer - 1 });
+        bidTime(props.item.id, { bidTimer: props.item.bidTimer - 1 });
       }, 100);
       return () => clearInterval(interval);
     } else {
       if (props.item.bidCount < 2) {
-        bidItem(props.item.id, {
+        bidTime(props.item.id, {
           bidTimer: 100,
           bidCount: props.item.bidCount + 1,
         });
       } else if (props.item.bidCount === 2 && props.item.buyerId) {
-        bidItem(props.item.id, { itemSold: true });
+        bidTime(props.item.id, { itemSold: true });
         if (props.currentUserId === props.item.buyerId) {
           setShow(true);
         }
       }
     }
-  }, []);
+  }, [props.item.bidTimer]);
 
   const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
     if (currBid) {
@@ -97,12 +99,7 @@ const ItemCard = (props) => {
                 )}
                 <div className="float-right">
                   Current Bid:
-                  <br />$
-                  {props.item.newBid ? (
-                    <span>{props.item.newBid}</span>
-                  ) : (
-                    <span>{props.item.currentBid}</span>
-                  )}
+                  <br />${props.item.currentBid}
                 </div>
               </Col>
               <Col md={2}>
@@ -222,4 +219,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);
+export default connect(mapStateToProps, { fetchItem, bidItem, bidTime })(ItemCard);

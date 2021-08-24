@@ -34,3 +34,9 @@ export const bidItem = (id, itemValues) => async dispatch => {
 
     dispatch({ type: 'BID_ITEM', payload: response.data });  
 };
+
+export const bidTime = (id, itemValues) => async dispatch => {
+    const response = await items.patch(`/items/${id}.json`, itemValues);
+
+    dispatch({ type: 'BID_TIME', payload: response.data });  
+};
