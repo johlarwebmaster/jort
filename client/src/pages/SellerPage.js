@@ -87,7 +87,7 @@ class ItemPage extends React.Component {
       document = reader.result;
       console.log(document);
       this.setState({
-        values: { ...this.state.values, [e.target.name]: e.target.files },
+        values: { ...this.state.values, [e.target.name]: document },
         // base: document,
         // image: true,
       });
