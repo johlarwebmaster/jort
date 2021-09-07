@@ -1,211 +1,115 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, ProgressBar, Card, Button, Modal } from "react-bootstrap";
+import { Row, Col, Card, Button, Modal } from "react-bootstrap";
+import ReactTimerStopwatch from "react-stopwatch-timer";
 import { connect } from "react-redux";
-import { fetchItem, bidItem, bidTime } from "../actions";
+import { bidItem, fetchItem } from "../actions";
 
 const ItemCard = (props) => {
-  const { fetchItem, bidItem, bidTime } = props;
+  const { fetchItem, bidItem } = props;
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-  //for more info modal
-  const [showInfo, setInfoShow] = useState(false);
-  const handleInfoClose = () => setInfoShow(false);
-  const handleInfoShow = () => setInfoShow(true);
-
   useEffect(() => {
     fetchItem(props.item.id);
-    const currentDate = new Date();
-    const postDate = new Date(props.item.sellTimer);
-    var hours = Math.floor(Math.abs(currentDate - postDate) / 36e5);
-    if (hours >= 6) {
-      bidItem(props.item.id, { timerSet: true });
-    }
   }, []);
-  useEffect(() => {
-    if (props.item.timerSet === true && props.item.bidTimer > 0) {
-      const interval = setInterval(() => {
-        bidTime(props.item.id, { bidTimer: props.item.bidTimer - 1 });
-      }, 100);
-      return () => clearInterval(interval);
-    } else {
-      if (props.item.bidCount < 2) {
-        bidTime(props.item.id, {
-          bidTimer: 100,
-          bidCount: props.item.bidCount + 1,
-        });
-      } else if (props.item.bidCount === 2 && props.item.buyerId) {
-        bidTime(props.item.id, { itemSold: true });
-        if (props.currentUserId === props.item.buyerId) {
-          setShow(true);
-        }
-      }
-    }
-  }, [props.item.bidTimer]);
 
-  const bidClick = (id, currBid, prevBid, newBid, buyer, buyerName) => {
-    if (currBid) {
-      bidItem(id, {
-        newBid: (parseFloat(currBid) + parseFloat(newBid)).toFixed(2),
-        buyerId: buyer,
-        buyerName: buyerName,
-        bidTimer: 100,
-        bidCount: 0,
-      });
-    } else if (prevBid) {
-      bidItem(id, {
-        currentBid: parseFloat(prevBid).toFixed(2),
-        newBid: (parseFloat(prevBid) + parseFloat(newBid)).toFixed(2),
-        buyerId: buyer,
-        buyerName: buyerName,
-        bidTimer: 100,
-        bidCount: 0,
-      });
+  const prebidTime = new Date(props.item.sellTimer);
+  prebidTime.setHours(prebidTime.getHours() + 6);
+  const nowTime = new Date().getTime();
+  const timeRemaining = prebidTime - nowTime;
+
+  const preHours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+  const preMins = Math.floor((timeRemaining / (1000 * 60)) % 60);
+  const preSecs = Math.floor((timeRemaining / 1000) % 60);
+
+  const bidTime = new Date(props.item.timerBid);
+  bidTime.setSeconds(bidTime.getSeconds() + 20);
+  const bidTimeRemaining = bidTime - nowTime;
+  console.log(bidTimeRemaining)
+
+  const bidSecs = Math.floor((bidTimeRemaining / 1000) % 60);
+
+  const fromTime = (props.item.timerSet !== true) ? new Date(0, 0, 0, preHours, preMins, preSecs) : new Date(0, 0, 0, 0, 0, bidSecs);
+
+  if (timeRemaining <= 0 && props.item.timerSet === false) {
+    bidItem(props.item.id, { timerSet: true, timerBid: new Date().toLocaleString() })
+  }
+
+  if (props.item.timerSet === true && props.item.timerBid <= 0) {
+    if (props.item.bidCounter > 2) {
+      bidItem(props.item.id, { timerBid: new Date().toLocaleString(), bidCounter: props.item.bidCounter + 1 })
+    } else {
+      bidItem(props.item.id, { itemSold: true })
     }
-  };
+  }
+
+  const bidClick = (id, increment, newBid, buyerId, buyerName, buyerEmail, buyerImage) => {
+    if (timeRemaining <= 0) {
+      bidItem(id, {
+        timerSet: true,
+        timerBid: new Date().toLocaleString()
+      })
+    } else if (timeRemaining > false) {
+      bidItem(id, {
+        timerSet: false,
+        emails: {...props.item.emails, buyerEmail},
+      })
+    }
+    bidItem(id, {
+      currentBid: newBid,
+      newBid: (parseFloat(newBid) + parseFloat(increment)).toFixed(2),
+      buyerId: buyerId,
+      buyerName: buyerName,
+      buyerEmail: buyerEmail,
+      buyerImage: buyerImage,
+    })
+  }
+
   return (
     <div>
       <Card>
         <Card.Header as="h4" className="bg-secondary title-text">
           {props.item.title}
         </Card.Header>
-        {props.item.itemSold !== true ? (
-          <Card.Body>
-            <Card.Text>{props.item.shortdesc}</Card.Text>
-            <Row>
-              <Col md={4}>
-                <div>
-                  <Button variant="primary" onClick={handleInfoShow}>
-                    More Info
-                  </Button>
-                  <Modal show={showInfo} onHide={handleInfoClose}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>{props.item.title}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>{props.item.description}</Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleInfoClose}>
-                        Close
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                </div>
-              </Col>
-              <Col md={6} className="text-right">
-                {props.item.buyerName && (
-                  <div className="float-left">
-                    {props.item.buyerName} is winning!
-                  </div>
-                )}
-                <div className="float-right">
-                  Current Bid:
-                  <br />${props.item.currentBid}
-                </div>
-              </Col>
-              <Col md={2}>
-                {props.item.sellerId !== props.currentUserId ? (
-                  <div>
-                    {props.item.newBid ? (
-                      <Button
-                        variant="primary"
-                        className="increase-bid"
-                        onClick={() =>
-                          bidClick(
-                            props.item.id,
-                            null,
-                            props.item.newBid,
-                            props.item.increment,
-                            props.currentUserId,
-                            props.firstName,
-                            props.item.bidTimer,
-                            props.item.bidCount
-                          )
-                        }
-                      >
-                        Bid
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="primary"
-                        className="increase-bid"
-                        onClick={() =>
-                          bidClick(
-                            props.item.id,
-                            props.item.currentBid,
-                            null,
-                            props.item.increment,
-                            props.currentUserId,
-                            props.firstName,
-                            props.item.bidTimer,
-                            props.item.bidCount
-                          )
-                        }
-                      >
-                        Bid
-                      </Button>
-                    )}
-                  </div>
-                ) : (
-                  <Button disabled>Bid</Button>
-                )}
-              </Col>
-            </Row>
-            <Row>
-              <Col>&nbsp;</Col>
-            </Row>
-            <Card.Footer>
-              <Row>
-                <Col>
-                  {props.item.bidCount === 0 && (
-                    <ProgressBar
-                      animated
-                      variant="success"
-                      now={props.item.bidTimer}
-                      label="A new bidder has emerged"
-                    />
-                  )}
-                  {props.item.bidCount === 1 && (
-                    <ProgressBar
-                      animated
-                      variant="warning"
-                      now={props.item.bidTimer}
-                      label="Going once..."
-                    />
-                  )}
-                  {props.item.bidCount === 2 && (
-                    <ProgressBar
-                      animated
-                      variant="danger"
-                      now={props.item.bidTimer}
-                      label="GOING TWICE..."
-                    />
-                  )}
-                </Col>
-              </Row>
-            </Card.Footer>
-          </Card.Body>
-        ) : (
-          <Card.Body>
-            <h1 className="display-1 text-center">This item is sold</h1>
-          </Card.Body>
-        )}
-        </Card>
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-          centered
-          dialogClassName="modal-90w"
-        >
-          <h1 className="text-center">You won!</h1>
-          <h3 className="text-center">
-            Please fill out the information below to claim your treasure!
-          </h3>
-        </Modal>
+        <Card.Body className="px-0">
+          <img src="" alt="placeholder" width="100%" height="200" /><br /><br />
+          <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
+          <Button
+            variant="primary"
+            className="btn-block text-center increase-bid"
+            onClick={() => bidClick(
+              props.item.id,
+              props.item.increment,
+              props.item.newBid,
+              props.currentUserId,
+              props.firstName,
+              props.email,
+              props.imageUrl
+            )}
+          >
+            Next Bid: ${props.item.newBid}<br />
+            Currently at ${props.item.currentBid}
+          </Button>
+          <Row>
+            <Col md={6}>
+              <ReactTimerStopwatch isOn={true} className="react-stopwatch-timer__table" watchType="timer" displayCircle={true} color="green" hintColor="red" fromTime={fromTime}>
+                {props.item.timerSet === false ?
+                  <div>Time until<br />prebid ends</div>
+                : <div>Time<br />remaining</div>
+                }
+              </ReactTimerStopwatch>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              &nbsp;
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -219,4 +123,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchItem, bidItem, bidTime })(ItemCard);
+export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);
