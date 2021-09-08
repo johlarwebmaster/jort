@@ -72,7 +72,7 @@ const ItemCard = (props) => {
           {props.item.title}
         </Card.Header>
         <Card.Body className="px-0">
-          <img src="" alt="placeholder" width="100%" height="200" /><br /><br />
+          <img src={props.item.file1} alt="placeholder" width="100%" /><br /><br />
           <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
           <Button
             variant="primary"
@@ -99,11 +99,13 @@ const ItemCard = (props) => {
                 }
               </ReactTimerStopwatch>
             </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              &nbsp;
-            </Col>
+            {props.item.buyerName &&
+              <Col md={3}>
+                &nbsp;<br />
+                <img src={props.item.buyerImage} width="45" height="45" /><br /><br />
+                <h4>{props.item.buyerName} is winning!</h4>
+              </Col>
+            }
           </Row>
         </Card.Body>
       </Card>
