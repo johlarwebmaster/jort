@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
-import ReactTimerStopwatch from "react-stopwatch-timer";
+import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
 import { bidItem, fetchItem } from "../actions";
 
@@ -29,7 +29,9 @@ const ItemCard = (props) => {
 
   const bidSecs = Math.floor((bidTimeRemaining / 1000) % 60);
 
-  const fromTime = (props.item.timerSet !== true) ? new Date(0, 0, 0, preHours, preMins, preSecs) : new Date(0, 0, 0, 0, 0, bidSecs);
+
+  // const fromTime = (props.item.timerSet !== true) ? new Date(0, 0, 0, preHours, preMins, preSecs) : new Date(0, 0, 0, 0, 0, bidSecs);
+  const fromTime=new Date(0,0,0,0,0,4)
 
   if (timeRemaining <= 0 && props.item.timerSet === false) {
     bidItem(props.item.id, { timerSet: true, timerBid: new Date().toLocaleString() })
@@ -65,6 +67,10 @@ const ItemCard = (props) => {
     })
   }
 
+function handleFinsh(){
+    console.log("do something else")
+  }
+
   return (
     <div>
       <Card>
@@ -72,7 +78,7 @@ const ItemCard = (props) => {
           {props.item.title}
         </Card.Header>
         <Card.Body className="px-0">
-          <img src={props.item.file1} alt="placeholder" width="100%" /><br /><br />
+          <img src="" alt="placeholder" width="100%" height="200" /><br /><br />
           <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
           <Button
             variant="primary"
@@ -92,20 +98,18 @@ const ItemCard = (props) => {
           </Button>
           <Row>
             <Col md={6}>
-              <ReactTimerStopwatch isOn={true} className="react-stopwatch-timer__table" watchType="timer" displayCircle={true} color="green" hintColor="red" fromTime={fromTime}>
+              <ReactTimerStopwatch isOn={true} className="react-stopwatch-timer__table" watchType="timer" displayCircle={true} color="green" hintColor="red" fromTime={fromTime} onFinsh={handleFinsh}>
                 {props.item.timerSet === false ?
                   <div>Time until<br />prebid ends</div>
                 : <div>Time<br />remaining</div>
                 }
               </ReactTimerStopwatch>
             </Col>
-            {props.item.buyerName &&
-              <Col md={3}>
-                &nbsp;<br />
-                <img src={props.item.buyerImage} width="45" height="45" /><br /><br />
-                <h4>{props.item.buyerName} is winning!</h4>
-              </Col>
-            }
+          </Row>
+          <Row>
+            <Col md={6}>
+              &nbsp;
+            </Col>
           </Row>
         </Card.Body>
       </Card>
