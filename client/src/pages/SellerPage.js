@@ -24,8 +24,6 @@ class ItemPage extends React.Component {
         timerSet: false,
         increment: "",
         sellerId: "",
-        buyerId: "",
-        buyerName: "",
         file1: "",
         file2: "",
         file3: "",
@@ -39,8 +37,6 @@ class ItemPage extends React.Component {
       },
       agreed: false,
       show: false,
-      // base: "",
-      // image: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -77,19 +73,13 @@ class ItemPage extends React.Component {
   };
 
   handleAttachFile = (e) => {
-    // this.setState({
-    //   values: { ...this.state.values, [e.target.name]: e.target.files },
-    // });
     let document = "";
     let reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = () => {
       document = reader.result;
-      console.log(document);
       this.setState({
         values: { ...this.state.values, [e.target.name]: document },
-        // base: document,
-        // image: true,
       });
     };
     reader.onerror = function (error) {
@@ -112,13 +102,6 @@ class ItemPage extends React.Component {
   render() {
     return (
       <Container className="App">
-        {/* {this.state.image ? (
-          // <img src={`data:image/jpeg;base64,${this.state.base}`} />
-          <img src={`${this.state.base}`} />
-        ) : (
-          <p>image</p>
-        )} */}
-
         <h2>What are You Looking to Sell?</h2>
         <Row>
           <Form onSubmit={this.handleSubmit}>
@@ -220,6 +203,7 @@ class ItemPage extends React.Component {
             </Form.Group>
             <Form.Group>
               <Form.File
+                name="file1"
                 id="file1"
                 label="Featured Image"
                 onChange={this.handleAttachFile}
@@ -227,6 +211,7 @@ class ItemPage extends React.Component {
             </Form.Group>
             <Form.Group>
               <Form.File
+                name="file2"
                 id="file2"
                 label="Image/Video"
                 onChange={this.handleAttachFile}
@@ -234,6 +219,7 @@ class ItemPage extends React.Component {
             </Form.Group>
             <Form.Group>
               <Form.File
+                name="file3"
                 id="file3"
                 label="Image/Video"
                 onChange={this.handleAttachFile}
@@ -241,6 +227,7 @@ class ItemPage extends React.Component {
             </Form.Group>
             <Form.Group>
               <Form.File
+                name="file4"
                 id="file4"
                 label="Image/Video"
                 onChange={this.handleAttachFile}
@@ -248,6 +235,7 @@ class ItemPage extends React.Component {
             </Form.Group>
             <Form.Group>
               <Form.File
+                name="file5"
                 id="file5"
                 label="Image/Video"
                 onChange={this.handleAttachFile}
