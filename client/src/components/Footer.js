@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Navbar, Nav, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import PrivacyContent from "./PrivacyContent";
 import BuyerContent from "./BuyerContent";
 import SellerTutorial from "./SellerTutorial";
 import BuyerTutorial from "./BuyerTutorial";
+import CheckDevice from "../actions/Device";
 
 const Footer = () => {
   const history = useHistory();
@@ -12,6 +13,12 @@ const Footer = () => {
   const [terms, setTerms] = useState(false);
   const [seller, setSeller] = useState(false);
   const [buyer, setBuyer] = useState(false);
+  const [Device,setDevice]=useState(null);
+
+  useEffect(() => {
+    let mobile=CheckDevice()
+    console.log("we are on mobile",mobile)
+ }, []);
 
   return (
     <div>
