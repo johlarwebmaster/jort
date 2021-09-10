@@ -25,3 +25,5 @@ yarn-error.log*
 /src/apicreds.js
 
 /src/firebaseConfig.js
+
+package-lock.json
