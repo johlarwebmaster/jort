@@ -1,102 +1,55 @@
-import React, {useState} from 'react';
+import React, {useState,useRef,useEffect} from 'react';
 
-let time;
+
+
 
 const Time = (props) => {
-    let onFinsh=props.onFinsh||function (){
+    let defaultTime=useRef(null);
+    let offset=useRef(null)
+    let stopWatch
+    const [text, setText] = useState("");
+
+    let onFinish=props.onFinsh||function (){
         return null
       }
-
-    const getValidDisplayTime = (hours, minutes, seconds) => {
-        let tmp = '';
-        if(props.displayHours !== false){
-            tmp = tmp + (hours/100).toFixed(2).slice(2);
-            if(props.displayMinutes !== false){
-                tmp = tmp + ":"
-            }
+ 
+    function counter(){
+        //add 1 millisecond to offset calculation time
+        let delta=defaultTime.current+offset.current-Date.now()
+        console.log(offset.current)
+        if(delta<0){
+            setText("00:00:00")
+            clearInterval(stopWatch)
+            return
         }
-        if(props.displayMinutes !== false){
-            tmp = tmp + (minutes/100).toFixed(2).slice(2);
-            if(props.displaySeconds !== false){
-                tmp = tmp + ":"
-            }
-        }
-        if(props.displaySeconds !== false){
-            tmp = tmp + (seconds/100).toFixed(2).slice(2);
-        }
-        return tmp
-    };
-
-    let defaultTime;
-
-    if(props.fromTime !== undefined){
-        defaultTime = new Date(props.fromTime);
-    }
-    else {
-        defaultTime = new Date(Date.now())
-    }
-
-    const [text, setText] = useState(getValidDisplayTime(defaultTime.getHours(),defaultTime.getMinutes(), defaultTime.getSeconds()));
-    const [idInterval, setIdInterval] = useState(0);
-    const [isCount, setIsCount] = useState(false);
-
-    const startStopwatch = () => {
-        if (time === undefined) {
-            if(props.fromTime !== undefined) {
-                time = new Date(props.fromTime);
-            }
-            else {
-                time = new Date(2000,0,0,0,0,0,0);
-            }
-        }
-        let start = Date.now();
-        const id = setInterval(function () {
-            const delta = Date.now() - start;
-            time.setMinutes(defaultTime.getMinutes());
-            time.setHours(defaultTime.getHours());
-            time.setSeconds(Math.floor(delta / 1000) + defaultTime.getMinutes());
-            props.hint(time.getSeconds());
-            setText(getValidDisplayTime(time.getHours(), time.getMinutes(), time.getSeconds()));
-        }, 1000);
-        setIdInterval(id)
-    };
-
-    const startTimer = () => {
-        //Gets Current Time+ Offset Based on Fromtime
-        let countDownDate =new Date(Date.now());
-        countDownDate.setSeconds(countDownDate.getSeconds() +defaultTime.getSeconds() + 1);
-        countDownDate.setMinutes(countDownDate.getMinutes() + defaultTime.getMinutes());
-        countDownDate.setHours(countDownDate.getHours() + defaultTime.getHours());
-        
-        const x = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
+        delta = new Date(delta)
     
-            if (distance <= 0) {
-                setText(getValidDisplayTime(0,0,0));
-                clearInterval(x) 
-                onFinsh() 
-                return
-            }
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            props.hint(seconds);
-            setText(getValidDisplayTime(hours,minutes,seconds));
-        }, 1000);
-    };
-    if(props.isOn === true && isCount === false){
-        if(props.watchType === "timer"){
-            startTimer();
-        }
-        else if (props.watchType === "stopwatch"){
-            startStopwatch()
-        }
-        setIsCount(true);
+        
+        setText(`${returnTimeString(delta.getUTCHours())}:${returnTimeString(delta.getUTCMinutes())}:${returnTimeString(delta.getUTCSeconds())}`);
+
     }
-    else if (props.isOn === false && isCount === true) {
-        clearInterval(idInterval)
+
+    function returnTimeString(number){
+        if(number>=10){
+            return `${number}`
+        }
+        return `0${number}`
     }
+  
+    useEffect(() => {
+        //this should be a prop and not hardcoded to 15
+        defaultTime.current=Date.now()+25000
+        //Some of the Later clocks seem to start sooner, adds a higher offset for the earlier indexes.
+        offset.current=1000-(250*props.index)
+        stopWatch = setInterval(counter, 1000);
+      }, []);
+
+
+
+
+   
+
+  
 
     return(
         <React.Fragment>
