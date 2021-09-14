@@ -12,7 +12,7 @@ const ReactTimerStopwatch = (props) => {
 
     return (
         <div className="react-stopwatch-timer__table">
-            <Time maxTime={props.maxTime} onFinsh={props.onFinsh} index={props.index}/>
+            <Time setMaxTime={props.setMaxTime} getMaxTime={props.getMaxTime} onFinsh={props.onFinsh} index={props.index} text={props.text}/>
                    <Circle color={props.color} tintColor={props.hintColor} hint={hint}/> 
         </div>
     );
