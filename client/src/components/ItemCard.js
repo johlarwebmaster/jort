@@ -1,75 +1,104 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
 import { bidItem, fetchItem } from "../actions";
+import BidButton from "./BidButton";
+
 
 const ItemCard = (props) => {
   const { fetchItem, bidItem } = props;
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const [bidCount, setBidCount] = useState(null);
+  const [ready,setReady] = useState(null);
+  const maxTime = useRef(null);
+  const [text, setText] = useState("");
+  let stopWatch
+ 
+  
+  /*init information sent from parent to itemcard initial information
+  * fetch item id
+  * fetch inital time
+Example Variables being passed as props currently
 
-  useEffect(() => {
-    fetchItem(props.item.id);
-  }, []);
+bidCount: 0
+bidTimer: 100
+buyerEmail: "johlarinc@gmail.com"
+buyerId: "116797558973696757598"
+buyerImage: "https://lh3.googleusercontent.com/a/AATXAJwrq27_CVXVbPc5PjZpHz3Z_vqNFQOIg2gVyvXt=s96-c"
+buyerName: "John"
+category: "select"
+currentBid: "5.00"
 
-  const prebidTime = new Date(props.item.sellTimer);
-  prebidTime.setHours(prebidTime.getHours() + 6);
-  const nowTime = new Date().getTime();
-  const timeRemaining = prebidTime - nowTime;
+//should probably add something about current finish time
+// Decide how we want to calcuate the other finish times
 
-  const preHours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
-  const preMins = Math.floor((timeRemaining / (1000 * 60)) % 60);
-  const preSecs = Math.floor((timeRemaining / 1000) % 60);
-
-  const bidTime = new Date(props.item.timerBid);
-  bidTime.setSeconds(bidTime.getSeconds() + 20);
-  const bidTimeRemaining = bidTime - nowTime;
-  console.log(bidTimeRemaining)
-
-  const bidSecs = Math.floor((bidTimeRemaining / 1000) % 60);
+  */
 
 
-  // const fromTime = (props.item.timerSet !== true) ? new Date(0, 0, 0, preHours, preMins, preSecs) : new Date(0, 0, 0, 0, 0, bidSecs);
-  const fromTime=new Date(0,0,0,0,0,4)
 
-  if (timeRemaining <= 0 && props.item.timerSet === false) {
-    bidItem(props.item.id, { timerSet: true, timerBid: new Date().toLocaleString() })
-  }
 
-  if (props.item.timerSet === true && props.item.timerBid <= 0) {
-    if (props.item.bidCounter > 2) {
-      bidItem(props.item.id, { timerBid: new Date().toLocaleString(), bidCounter: props.item.bidCounter + 1 })
-    } else {
-      bidItem(props.item.id, { itemSold: true })
+  const bidClick = (currlimit) => {
+    if(bidCount>0){
+      clearInterval(stopWatch)
+      maxTime.current=Date.now()+20000
     }
+
   }
 
-  const bidClick = (id, increment, newBid, buyerId, buyerName, buyerEmail, buyerImage) => {
-    if (timeRemaining <= 0) {
-      bidItem(id, {
-        timerSet: true,
-        timerBid: new Date().toLocaleString()
-      })
-    } else if (timeRemaining > false) {
-      bidItem(id, {
-        timerSet: false,
-        emails: {...props.item.emails, buyerEmail},
-      })
+
+function handleFinish(){
+    setBidCount(bidCount+1)
+  }
+
+  function counter(){
+    //add 1 millisecond to offset calculation time
+    let delta=maxTime.current-Date.now()+1000
+    //Give 3 seconds for last minute bid to be processed 
+     if(delta<-3000){
+      clearInterval(stopWatch)
+      handleFinish()
+      return
     }
-    bidItem(id, {
-      currentBid: newBid,
-      newBid: (parseFloat(newBid) + parseFloat(increment)).toFixed(2),
-      buyerId: buyerId,
-      buyerName: buyerName,
-      buyerEmail: buyerEmail,
-      buyerImage: buyerImage,
-    })
+    else if(delta<0){
+      setText("00:00:00")
+      setReady(null)
+      return      
   }
+    delta = new Date(delta)
+    setText(`${returnTimeString(delta.getUTCHours())}:${returnTimeString(delta.getUTCMinutes())}:${returnTimeString(delta.getUTCSeconds())}`);
 
-function handleFinsh(){
-    console.log("do something else")
+}
+
+
+useEffect(() => {
+  setBidCount(0)
+ }, []);
+
+ useEffect(() => {
+   if(bidCount==0){
+    maxTime.current=Date.now()+40000
+    stopWatch=setInterval(counter)
+    setReady(true)
+   }
+    else if(bidCount<3){
+    maxTime.current=Date.now()+20000
+    stopWatch=setInterval(counter)
+    setReady(true)
+      }
+    else{
+      setReady(false)
+    }
+ }, [bidCount]);
+
+
+
+function returnTimeString(number){
+  if(number>=10){
+      return `${number}`
   }
+  return `0${number}`
+}
+
 
   return (
     <div>
@@ -80,25 +109,28 @@ function handleFinsh(){
         <Card.Body className="px-0">
           <img src="" alt="placeholder" width="100%" height="200" /><br /><br />
           <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
-          <Button
+          <BidButton
+          ready={ready}
+          variant="primary"
+          className="btn-block text-center increase-bid"
+          onClick={bidClick}
+          nextBid={props.item.newBid}
+          currentBid={props.item.currentBid}
+          >
+            
+          </BidButton>
+          {/* <Button
             variant="primary"
             className="btn-block text-center increase-bid"
-            onClick={() => bidClick(
-              props.item.id,
-              props.item.increment,
-              props.item.newBid,
-              props.currentUserId,
-              props.firstName,
-              props.email,
-              props.imageUrl
-            )}
+            onClick={bidClick}
           >
             Next Bid: ${props.item.newBid}<br />
             Currently at ${props.item.currentBid}
-          </Button>
+          </Button> */}
           <Row>
             <Col md={6}>
-              <ReactTimerStopwatch isOn={true} className="react-stopwatch-timer__table" watchType="timer" displayCircle={true} color="green" hintColor="red" fromTime={fromTime} onFinsh={handleFinsh}>
+        
+              <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index} text={text}>
                 {props.item.timerSet === false ?
                   <div>Time until<br />prebid ends</div>
                 : <div>Time<br />remaining</div>
