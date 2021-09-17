@@ -13,10 +13,6 @@ const Header = () => {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav" className="d-flex flex-row-reverse">
             <GoogleAuth />
-            <Form inline>
-                <FormControl type="text" placeholder="Quick Search" className="ml-sm-2" />
-                <Button variant="outline-success">Search</Button>
-            </Form>
         </Navbar.Collapse>
     </Navbar>
   );
