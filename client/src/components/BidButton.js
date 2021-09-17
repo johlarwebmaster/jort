@@ -1,7 +1,7 @@
-import React,{useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { Button } from 'react-bootstrap';
 
-const BidButton = (props)=>{
+const BidButton = (props) => {
 
     
 

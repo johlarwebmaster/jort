@@ -12,7 +12,7 @@ const ItemCard = (props) => {
   const [ready,setReady] = useState(null);
   const maxTime = useRef(null);
   const [text, setText] = useState("");
-  let stopWatch
+  let stopWatch;
  
   
   /*init information sent from parent to itemcard initial information
@@ -37,12 +37,12 @@ currentBid: "5.00"
 
 
 
-  const bidClick = (currlimit) => {
+  const bidClick = (id, username, email, userid) => {
     if(bidCount>0){
       clearInterval(stopWatch)
       maxTime.current=Date.now()+20000
     }
-
+    bidItem(id, {buyerName: username, buyerEmail: email, buyerId: userid})
   }
 
 
@@ -71,12 +71,13 @@ function handleFinish(){
 
 
 useEffect(() => {
+  fetchItem(props.item.id);
   setBidCount(0)
  }, []);
 
  useEffect(() => {
    if(bidCount==0){
-    maxTime.current=Date.now()+40000
+    maxTime.current=Date.now()+20000
     stopWatch=setInterval(counter)
     setReady(true)
    }
@@ -88,7 +89,7 @@ useEffect(() => {
     else{
       setReady(false)
     }
- }, [bidCount]);
+ }, []);
 
 
 
@@ -113,7 +114,7 @@ function returnTimeString(number){
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={bidClick}
+          onClick={() => bidClick(props.item.id, props.firstName, props.email, props.currentUserId)}
           nextBid={props.item.newBid}
           currentBid={props.item.currentBid}
           >
@@ -137,11 +138,11 @@ function returnTimeString(number){
                 }
               </ReactTimerStopwatch>
             </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              &nbsp;
-            </Col>
+            {props.item.buyerId &&
+              <Col md={6}>
+                {props.item.buyerName} is winning!
+              </Col>
+            }
           </Row>
         </Card.Body>
       </Card>
