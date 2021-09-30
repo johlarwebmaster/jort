@@ -11,8 +11,7 @@ const StyledMenu = styled.nav`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #EFFFFA;
-  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(-100%)'};
+  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
   height: 100vh;
   text-align: left;
   padding: 2rem;
@@ -26,7 +25,6 @@ const StyledMenu = styled.nav`
     }
 
   .nav_button {
-    font-size: 2rem;
     text-transform: uppercase;
     padding: 2rem 0;
     font-weight: bold;
@@ -55,11 +53,12 @@ const Menu = ({ open }) => {
 
   return (
     <div>
-      <StyledMenu open={open}>
+      <StyledMenu className="bg-secondary" open={open}>
+        <button className="nav_button" onClick={() => history.push("/")}>Home</button>
         <button className="nav_button" onClick={() => history.push("/list")}>Items</button>
         <button className="nav_button" onClick={() => history.push("/seller")}>Seller</button>
         <button className="nav_button" onClick={() => setPrivacy(true)}>Privacy</button>
-        <button className="nav_button" onClick={() => setTerms(true)}>Terms of Service</button>
+        <button className="nav_button" onClick={() => setTerms(true)}>Terms of<br />Service</button>
         <button className="nav_button" onClick={() => setSeller(true)}>Seller Tutorial</button>
         <button className="nav_button" onClick={() => setBuyer(true)}>Buyer Tutorial</button>
       </StyledMenu>

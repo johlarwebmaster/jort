@@ -17,16 +17,14 @@ const Home = () => {
       <Row>
         <Col md={6} sm={6} xs={6}>
           <Card style={{ width: '100%' }}>
-            <Card.Title className="bg-primary text-center py-3 title-text"><h2>Buyer</h2></Card.Title>
+            <Button variant="primary" className="text-center py-3"><h2 className="h1 title-text" onClick={handleBuy}>Buyer</h2></Button>
             <Card.Text className="text-center">Select this option if you are in the market to buy items or services.</Card.Text>
-            <Button variant="primary" onClick={handleBuy}>Buy</Button>
           </Card>
         </Col>
         <Col md={6} sm={6} xs={6}>
           <Card style={{ width: '100%' }}>
-            <Card.Title className="bg-secondary text-center py-3 title-text"><h2>Seller</h2></Card.Title>
+            <Button variant="secondary" className="text-center py-3"><h2 className="h1 title-text" onClick={handleSell}>Seller</h2></Button>
             <Card.Text className="text-center">Select this option if you are looking to sell items or services.</Card.Text>
-            <Button variant="secondary" onClick={handleSell}>Sell</Button>
           </Card>
         </Col>
       </Row>

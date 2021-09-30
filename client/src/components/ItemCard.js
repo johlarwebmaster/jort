@@ -104,7 +104,7 @@ function returnTimeString(number){
   return (
     <div>
       <Card>
-        <Card.Header as="h4" className="bg-secondary title-text">
+        <Card.Header as="h4" className="bg-secondary item-title">
           {props.item.title}
         </Card.Header>
         <Card.Body className="px-0">

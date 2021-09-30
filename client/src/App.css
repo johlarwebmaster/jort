@@ -1,8 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Lobster);
-@import url(https://fonts.googleapis.com/css?family=Pirata+One);
+@import url(https://fonts.googleapis.com/css?family=Ephesis);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 body {
-  font-family: "Lobster" !important;
+  font-family: "Open Sans" !important;
 }
 
 .App {
@@ -31,5 +31,13 @@ body {
 }
 
 .title-text {
-  font-family: Pirata One;
+  font-family: "Ephesis";
+  font-size: 2.3rem;
+  font-weight: 700 !important;
+  letter-spacing: 0.3rem;
+}
+
+.item-title {
+  font-size: 2.3rem;
+  font-weight: 700 !important;
 }
