@@ -1,23 +1,41 @@
 import React, { useEffect } from 'react';
 import ItemCard from '../components/ItemCard';
 import { Row, Col, Container } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { fetchItems } from '../actions';
+import { connect, useSelector } from 'react-redux';
+import { useFirebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+// import { fetchItems } from '../actions';
 
 const ItemList = props => {
-    const { fetchItems } = props;
+    // const { fetchItems } = props;
 
-    useEffect(() => {
-        fetchItems();
-    }, []);
+    // useEffect(() => {
+    //     fetchItems();
+    // }, []);
+    useFirebaseConnect([
+        'items'
+    ])
+    
+    const items = useSelector((state) => state.firebase.ordered.items)
+
+    if (!isLoaded(items)) {
+        return (<Container className="App">
+        <Row className="flex-center">
+            <img src="assets/boat-wave.gif" alt="loading" />
+        </Row>
+    </Container>)
+    }
+
+    if (isEmpty(items)) {
+        return <div>Todos List Is Empty</div>
+    }
 
     return (
         <Container className="App">
             <Row>
-                {props.items.map(i => {
-                    if (i.id) return (
-                        <Col md={6} key={i.id} className="my-2">
-                            <ItemCard item={i} />
+                {Object.keys(items).map( (key, id) => {
+                    return (
+                        <Col md={6} key={key} className="my-2">
+                            <ItemCard id={id} item={items[key]} />
                         </Col>
                 )})}
             </Row>
@@ -38,4 +56,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, { fetchItems })(ItemList);
+export default connect(mapStateToProps)(ItemList);

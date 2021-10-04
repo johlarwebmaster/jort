@@ -2,18 +2,18 @@ import React, { useEffect, useState ,useRef} from "react";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
-import { bidItem, fetchItem } from "../actions";
+import { fetchItem } from "../actions";
 import BidButton from "./BidButton";
+import { useFirebaseConnect, useFirebase } from 'react-redux-firebase'
 
 
 const ItemCard = (props) => {
-  const { fetchItem, bidItem } = props;
+  const { fetchItem } = props;
   const [bidCount, setBidCount] = useState(null);
   const [ready,setReady] = useState(null);
   const maxTime = useRef(null);
   const [text, setText] = useState("");
   let stopWatch;
- 
   
   /*init information sent from parent to itemcard initial information
   * fetch item id
@@ -34,15 +34,39 @@ currentBid: "5.00"
 
   */
 
+  const firebase = useFirebase()
+
+
+  const bidItem = (id, payload) => {
+    return firebase.update(`items/${id}`, payload)
+  }
 
 
 
-  const bidClick = (id, username, email, userid) => {
+  const bidClick = (id, newBid, username, email, userid) => {
     if(bidCount>0){
       clearInterval(stopWatch)
       maxTime.current=Date.now()+20000
     }
-    bidItem(id, {buyerName: username, buyerEmail: email, buyerId: userid})
+    if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
+      
+      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid })
+
+    }
+    else{
+          
+      if(userid == props.item.value.buyerId){
+        
+        alert("you are currently the highest bidder");
+      
+      }
+
+      else{
+        
+        alert("You can't bid on an item you are selling");
+      
+      }
+    }
   }
 
 
@@ -71,8 +95,9 @@ function handleFinish(){
 
 
 useEffect(() => {
-  fetchItem(props.item.id);
+  fetchItem(props.item.value.id);
   setBidCount(0)
+  // console.log(props.item.value)
  }, []);
 
  useEffect(() => {
@@ -91,6 +116,9 @@ useEffect(() => {
     }
  }, []);
 
+  const getNextBid = () =>{
+    return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
+  }
 
 
 function returnTimeString(number){
@@ -105,18 +133,18 @@ function returnTimeString(number){
     <div>
       <Card>
         <Card.Header as="h4" className="bg-secondary item-title">
-          {props.item.title}
+          {props.item.value.title}
         </Card.Header>
         <Card.Body className="px-0">
           <img src="" alt="placeholder" width="100%" height="200" /><br /><br />
-          <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
+          <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
           <BidButton
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.id, props.firstName, props.email, props.currentUserId)}
-          nextBid={props.item.newBid}
-          currentBid={props.item.currentBid}
+          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId)}
+          nextBid={getNextBid()}
+          currentBid={props.item.value.currentBid}
           >
             
           </BidButton>
@@ -125,22 +153,22 @@ function returnTimeString(number){
             className="btn-block text-center increase-bid"
             onClick={bidClick}
           >
-            Next Bid: ${props.item.newBid}<br />
-            Currently at ${props.item.currentBid}
+            Next Bid: ${props.item.value.newBid}<br />
+            Currently at ${props.item.value.currentBid}
           </Button> */}
           <Row>
             <Col md={6}>
         
               <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index} text={text}>
-                {props.item.timerSet === false ?
+                {props.item.value.timerSet === false ?
                   <div>Time until<br />prebid ends</div>
                 : <div>Time<br />remaining</div>
                 }
               </ReactTimerStopwatch>
             </Col>
-            {props.item.buyerId &&
+            {props.item.value.buyerId &&
               <Col md={6}>
-                {props.item.buyerName} is winning!
+                {props.item.value.buyerName} is winning!
               </Col>
             }
           </Row>
@@ -162,4 +190,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);
+export default connect(mapStateToProps, { fetchItem })(ItemCard);

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import itemReducer from './itemsReducer';
+import {firebaseReducer} from 'react-redux-firebase'
 
 export default combineReducers({
     auth: authReducer,
-    items: itemReducer
+    items: itemReducer,
+    firebase: firebaseReducer
 });
