@@ -47,3 +47,7 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+.flex-center{
+  justify-content: center;
+  align-items: center;
+}
