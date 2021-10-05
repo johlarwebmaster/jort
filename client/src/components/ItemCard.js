@@ -136,8 +136,11 @@ function returnTimeString(number){
           {props.item.value.title}
         </Card.Header>
         <Card.Body className="px-0">
-          <img src="" alt="placeholder" width="100%" height="200" /><br /><br />
-          <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
+          {props.item.file1 ?
+            <img src={props.item.file1} alt={props.item.title} width="100%" height="200" />
+          : <img src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png" alt="placeholder" width="100%" height="200" /> }
+          <br /><br />
+          <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
           <BidButton
           ready={ready}
           variant="primary"
@@ -168,7 +171,8 @@ function returnTimeString(number){
             </Col>
             {props.item.value.buyerId &&
               <Col md={6}>
-                {props.item.value.buyerName} is winning!
+                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
+                {props.item.buyerName} is winning!
               </Col>
             }
           </Row>
