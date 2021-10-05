@@ -2,7 +2,7 @@ import React, { useEffect, useState ,useRef} from "react";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
-import { fetchItem } from "../actions";
+import { fetchItem, bidItem } from "../actions";
 import BidButton from "./BidButton";
 import { useFirebaseConnect, useFirebase } from 'react-redux-firebase'
 
@@ -194,4 +194,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchItem })(ItemCard);
+export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);
