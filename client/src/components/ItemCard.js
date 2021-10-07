@@ -2,7 +2,7 @@ import React, { useEffect, useState ,useRef} from "react";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
-import { fetchItem, bidItem } from "../actions";
+import { fetchItem } from "../actions";
 import BidButton from "./BidButton";
 import { useFirebaseConnect, useFirebase } from 'react-redux-firebase'
 
@@ -43,14 +43,14 @@ currentBid: "5.00"
 
 
 
-  const bidClick = (id, newBid, username, email, userid) => {
+  const bidClick = (id, newBid, username, email, userid, buyerImage) => {
     if(bidCount>0){
       clearInterval(stopWatch)
       maxTime.current=Date.now()+20000
     }
     if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
       
-      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid })
+      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid, buyerImage: buyerImage })
 
     }
     else{
@@ -145,7 +145,7 @@ function returnTimeString(number){
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId)}
+          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
           nextBid={getNextBid()}
           currentBid={props.item.value.currentBid}
           >
@@ -194,4 +194,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchItem, bidItem })(ItemCard);
+export default connect(mapStateToProps, { fetchItem })(ItemCard);
