@@ -171,8 +171,8 @@ function returnTimeString(number){
             </Col>
             {props.item.value.buyerId &&
               <Col md={6}>
-                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
-                {props.item.buyerName} is winning!
+                <img src={props.item.value.buyerImage} width="50" height="50" />&nbsp;&nbsp;
+                {props.item.value.buyerName} is winning!
               </Col>
             }
           </Row>
