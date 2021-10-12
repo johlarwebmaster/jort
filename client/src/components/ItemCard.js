@@ -43,14 +43,14 @@ currentBid: "5.00"
 
 
 
-  const bidClick = (id, newBid, username, email, userid) => {
+  const bidClick = (id, newBid, username, email, userid, buyerImage) => {
     if(bidCount>0){
       clearInterval(stopWatch)
       maxTime.current=Date.now()+20000
     }
     if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
       
-      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid })
+      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid, buyerImage: buyerImage })
 
     }
     else{
@@ -145,7 +145,7 @@ function returnTimeString(number){
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId)}
+          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
           nextBid={getNextBid()}
           currentBid={props.item.value.currentBid}
           >
@@ -171,8 +171,8 @@ function returnTimeString(number){
             </Col>
             {props.item.value.buyerId &&
               <Col md={6}>
-                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
-                {props.item.buyerName} is winning!
+                <img src={props.item.value.buyerImage} width="50" height="50" />&nbsp;&nbsp;
+                {props.item.value.buyerName} is winning!
               </Col>
             }
           </Row>
