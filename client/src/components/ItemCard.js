@@ -9,12 +9,8 @@ import { useFirebaseConnect, useFirebase } from 'react-redux-firebase'
 
 const ItemCard = (props) => {
   const { fetchItem } = props;
-  const [bidCount, setBidCount] = useState(null);
   const [ready,setReady] = useState(null);
-  const maxTime = useRef(null);
   const [text, setText] = useState("");
-  let stopWatch;
-  
   /*init information sent from parent to itemcard initial information
   * fetch item id
   * fetch inital time
@@ -35,24 +31,31 @@ currentBid: "5.00"
   */
 
   const firebase = useFirebase()
+  const maxTime=props.item.value.sellTimer
+  const bidCount=props.item.value.bidCount
+  // We need to apply some useeffects, only when the value changes and not when
+  // it is intialized
+  const bidCountBool=useRef(false)
+  const stopWatch=useRef()
+  // just for testing
+  const bidMax=40
 
 
   const bidItem = (id, payload) => {
     return firebase.update(`items/${id}`, payload)
   }
+  
 
 
 
   const bidClick = (id, newBid, username, email, userid) => {
-    if(bidCount>0){
-      clearInterval(stopWatch)
-      maxTime.current=Date.now()+20000
-    }
     if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
+      //sellTimer:new Date(Date.now()+10000000)
+      //Not sure how to properly send new time to firebase
       
-      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid })
-
+      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:1})
     }
+ 
     else{
           
       if(userid == props.item.value.buyerId){
@@ -68,26 +71,26 @@ currentBid: "5.00"
       }
     }
   }
-
-
-function handleFinish(){
-    setBidCount(bidCount+1)
+  //Closes Timer Resets Clock
+  function clearTimer(){
+    setText("00:00:00")
+    clearInterval(stopWatch.current)
   }
+
+
 
   function counter(){
     //add 1 millisecond to offset calculation time
-    let delta=maxTime.current-Date.now()+1000
+    let delta=new Date(maxTime).getTime()-Date.now()+1000
     //Give 3 seconds for last minute bid to be processed 
      if(delta<-3000){
-      clearInterval(stopWatch)
-      handleFinish()
+      clearTimer()
       return
     }
-    else if(delta<0){
+    if (delta<0){
       setText("00:00:00")
-      setReady(null)
-      return      
-  }
+      return
+    }
     delta = new Date(delta)
     setText(`${returnTimeString(delta.getUTCHours())}:${returnTimeString(delta.getUTCMinutes())}:${returnTimeString(delta.getUTCSeconds())}`);
 
@@ -96,25 +99,42 @@ function handleFinish(){
 
 useEffect(() => {
   fetchItem(props.item.value.id);
-  setBidCount(0)
-  // console.log(props.item.value)
  }, []);
 
  useEffect(() => {
-   if(bidCount==0){
-    maxTime.current=Date.now()+20000
-    stopWatch=setInterval(counter)
+   if(bidCount>0 && bidCount<bidMax){
+    stopWatch.current=setInterval(counter)
     setReady(true)
    }
-    else if(bidCount<3){
-    maxTime.current=Date.now()+20000
-    stopWatch=setInterval(counter)
-    setReady(true)
-      }
+   // Do something for other timers
     else{
       setReady(false)
     }
  }, []);
+
+
+ useEffect(() => {
+   console.log(bidCount,ready,props.item.value.id)
+   //skips initialization of bidCounter
+   if (bidCountBool.current==false){
+    bidCountBool.current=true
+    return
+   }
+  
+   // close timer
+  if(bidCount>=bidMax && bidCountBool.current){
+    clearTimer()
+    setReady(false)
+  }
+  else if(bidCount>0 && bidCount<bidMax && bidCountBool.current){
+    console.log("tatt",stopWatch)
+    clearTimer()
+    console.log(maxTime,stopWatch)
+    stopWatch.current=setInterval(counter)
+  }
+
+}, [bidCount]);
+
 
   const getNextBid = () =>{
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
@@ -151,14 +171,6 @@ function returnTimeString(number){
           >
             
           </BidButton>
-          {/* <Button
-            variant="primary"
-            className="btn-block text-center increase-bid"
-            onClick={bidClick}
-          >
-            Next Bid: ${props.item.value.newBid}<br />
-            Currently at ${props.item.value.currentBid}
-          </Button> */}
           <Row>
             <Col md={6}>
         
