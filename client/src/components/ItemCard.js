@@ -1,16 +1,16 @@
-import React, { useEffect, useState ,useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
 import { fetchItem } from "../actions";
 import BidButton from "./BidButton";
-import { useFirebaseConnect, useFirebase } from 'react-redux-firebase'
-
+import { useFirebaseConnect, useFirebase } from "react-redux-firebase";
 
 const ItemCard = (props) => {
   const { fetchItem } = props;
   const [ready,setReady] = useState(null);
   const [text, setText] = useState("");
+
   /*init information sent from parent to itemcard initial information
   * fetch item id
   * fetch inital time
@@ -61,13 +61,8 @@ currentBid: "5.00"
       if(userid == props.item.value.buyerId){
         
         alert("you are currently the highest bidder");
-      
-      }
-
-      else{
-        
+      } else {
         alert("You can't bid on an item you are selling");
-      
       }
     }
   }
@@ -79,7 +74,7 @@ currentBid: "5.00"
 
 
 
-  function counter(){
+  function counter() {
     //add 1 millisecond to offset calculation time
     let delta=new Date(maxTime).getTime()-Date.now()+1000
     //Give 3 seconds for last minute bid to be processed 
@@ -140,14 +135,18 @@ useEffect(() => {
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
   }
 
+  const getNextBid = () => {
+    return `${
+      Number(props.item.value.currentBid) + Number(props.item.value.increment)
+    }.00`;
+  };
 
-function returnTimeString(number){
-  if(number>=10){
-      return `${number}`
+  function returnTimeString(number) {
+    if (number >= 10) {
+      return `${number}`;
+    }
+    return `0${number}`;
   }
-  return `0${number}`
-}
-
 
   return (
     <div>
@@ -156,11 +155,23 @@ function returnTimeString(number){
           {props.item.value.title}
         </Card.Header>
         <Card.Body className="px-0">
-          {props.item.file1 ?
-            <img src={props.item.file1} alt={props.item.title} width="100%" height="200" />
-          : <img src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png" alt="placeholder" width="100%" height="200" /> }
-          <br /><br />
-          <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
+          {props.item.value.file1 ? (
+            <img
+              src={props.item.value.file1}
+              alt={props.item.value.title}
+              width="100%"
+            />
+          ) : (
+            // <img
+            //   src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png"
+            //   alt="placeholder"
+            //   width="100%"
+            // />
+            <p>No Image Available</p>
+          )}
+          <br />
+          <br />
+          <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
           <BidButton
           ready={ready}
           variant="primary"
@@ -173,26 +184,41 @@ function returnTimeString(number){
           </BidButton>
           <Row>
             <Col md={6}>
-        
-              <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index} text={text}>
-                {props.item.value.timerSet === false ?
-                  <div>Time until<br />prebid ends</div>
-                : <div>Time<br />remaining</div>
-                }
+              <ReactTimerStopwatch
+                className="react-stopwatch-timer__table"
+                color="green"
+                hintColor="red"
+                index={props.index}
+                text={text}
+              >
+                {props.item.value.timerSet === false ? (
+                  <div>
+                    Time until
+                    <br />
+                    prebid ends
+                  </div>
+                ) : (
+                  <div>
+                    Time
+                    <br />
+                    remaining
+                  </div>
+                )}
               </ReactTimerStopwatch>
             </Col>
-            {props.item.value.buyerId &&
+            {props.item.value.buyerId && (
               <Col md={6}>
-                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
-                {props.item.buyerName} is winning!
+                <img src={props.item.value.buyerImage} width="50" height="50" />
+                &nbsp;&nbsp;
+                {props.item.value.buyerName} is winning!
               </Col>
-            }
+            )}
           </Row>
         </Card.Body>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
