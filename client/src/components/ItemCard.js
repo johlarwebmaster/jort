@@ -150,20 +150,21 @@ useEffect(() => {
           {props.item.value.title}
         </Card.Header>
         <Card.Body className="px-0">
-          {props.item.value.file1 ? (
-            <img
-              src={props.item.value.file1}
-              alt={props.item.value.title}
-              width="100%"
-            />
-          ) : (
-            // <img
-            //   src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png"
-            //   alt="placeholder"
-            //   width="100%"
-            // />
-            <p>No Image Available</p>
-          )}
+          <div className="card-img-holder">
+            {props.item.value.file1 ? (
+              <img
+                src={props.item.value.file1}
+                alt={props.item.value.title}
+                className="card-img"
+              />
+            ) : (
+              <img
+                src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png"
+                alt="No Image Available"
+                className="card-img"
+              />
+            )}
+          </div>
           <br />
           <br />
           <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
