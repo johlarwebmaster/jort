@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Row, Col, Card, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
 import { fetchItem } from "../actions";
@@ -10,6 +10,8 @@ const ItemCard = (props) => {
   const { fetchItem } = props;
   const [ready,setReady] = useState(null);
   const [text, setText] = useState("");
+  const [itemImage, setItemImage] = useState("https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png");
+  const [itemImageAlt, setItemImageAlt] = useState("No image available");
 
   const firebase = useFirebase()
   const maxTime=props.item.value.sellTimer
@@ -75,6 +77,10 @@ const ItemCard = (props) => {
 
 useEffect(() => {
   fetchItem(props.item.value.id);
+  if (props.item.value.file1) {
+    setItemImage(props.item.value.file1);
+    setItemImageAlt(props.item.value.title);
+  }
  }, []);
 
  useEffect(() => {
@@ -130,22 +136,55 @@ useEffect(() => {
           {props.item.value.title}
         </Card.Header>
         <Card.Body className="px-0">
-          {props.item.value.file1 ? (
-            <img
-              src={props.item.value.file1}
-              alt={props.item.value.title}
-              width="100%"
-            />
-          ) : (
-            // <img
-            //   src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png"
-            //   alt="placeholder"
-            //   width="100%"
-            // />
-            <p>No Image Available</p>
-          )}
-          <br />
-          <br />
+          <div className="card-img-holder">
+            <img src={itemImage} alt={itemImageAlt} className="card-img" />
+          </div>
+          {props.item.value.file1 &&
+            <Container className="img-prev-holder">
+              <Row>
+                <Col className="col-2">
+                  <a onMouseEnter={() => setItemImage(props.item.value.file1)} onClick={() => setItemImage(props.item.value.file1)}>
+                    <img src={props.item.value.file1} alt="Click to see this image" className="img-thumbnail" />
+                  </a>
+                </Col>
+                {props.item.value.file2 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file2)} onClick={() => setItemImage(props.item.value.file2)}>
+                      <img src={props.item.value.file2} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file3 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file3)} onClick={() => setItemImage(props.item.value.file3)}>
+                      <img src={props.item.value.file3} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file4 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file4)} onClick={() => setItemImage(props.item.value.file4)}>
+                      <img src={props.item.value.file4} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file5 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file5)} onClick={() => setItemImage(props.item.value.file5)}>
+                      <img src={props.item.value.file5} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file6 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file6)} onClick={() => setItemImage(props.item.value.file6)}>
+                      <img src={props.item.value.file6} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+              </Row>
+            </Container>
+          }
           <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
           <BidButton
           ready={ready}
