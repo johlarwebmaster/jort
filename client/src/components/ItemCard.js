@@ -11,25 +11,6 @@ const ItemCard = (props) => {
   const [ready,setReady] = useState(null);
   const [text, setText] = useState("");
 
-  /*init information sent from parent to itemcard initial information
-  * fetch item id
-  * fetch inital time
-Example Variables being passed as props currently
-
-bidCount: 0
-bidTimer: 100
-buyerEmail: "johlarinc@gmail.com"
-buyerId: "116797558973696757598"
-buyerImage: "https://lh3.googleusercontent.com/a/AATXAJwrq27_CVXVbPc5PjZpHz3Z_vqNFQOIg2gVyvXt=s96-c"
-buyerName: "John"
-category: "select"
-currentBid: "5.00"
-
-//should probably add something about current finish time
-// Decide how we want to calcuate the other finish times
-
-  */
-
   const firebase = useFirebase()
   const maxTime=props.item.value.sellTimer
   const bidCount=props.item.value.bidCount
@@ -48,12 +29,12 @@ currentBid: "5.00"
 
 
 
-  const bidClick = (id, newBid, username, email, userid) => {
+  const bidClick = (id, newBid, username, email, userid, image) => {
     if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
       //sellTimer:new Date(Date.now()+10000000)
       //Not sure how to properly send new time to firebase
       
-      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:1})
+      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid, buyerImage: image, bidCount:1})
     }
  
     else{
@@ -135,12 +116,6 @@ useEffect(() => {
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
   }
 
-  const getNextBid = () => {
-    return `${
-      Number(props.item.value.currentBid) + Number(props.item.value.increment)
-    }.00`;
-  };
-
   function returnTimeString(number) {
     if (number >= 10) {
       return `${number}`;
@@ -176,7 +151,7 @@ useEffect(() => {
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId)}
+          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
           nextBid={getNextBid()}
           currentBid={props.item.value.currentBid}
           >
