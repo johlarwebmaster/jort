@@ -61,3 +61,14 @@ body {
   height: 100%;
   width: auto;
 }
+
+.img-prev-holder {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.img-thumbnail {
+  max-height: 50px;
+  max-width: 100%;
+}
