@@ -48,12 +48,12 @@ currentBid: "5.00"
 
 
 
-  const bidClick = (id, newBid, username, email, userid) => {
+  const bidClick = (id, newBid, username, email, userid, image) => {
     if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
       //sellTimer:new Date(Date.now()+10000000)
       //Not sure how to properly send new time to firebase
       
-      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:1})
+      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid, buyerImage: image, bidCount:1})
     }
  
     else{
@@ -135,11 +135,6 @@ useEffect(() => {
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
   }
 
-  const getNextBid = () => {
-    return `${
-      Number(props.item.value.currentBid) + Number(props.item.value.increment)
-    }.00`;
-  };
 
   function returnTimeString(number) {
     if (number >= 10) {
@@ -176,7 +171,7 @@ useEffect(() => {
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId)}
+          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
           nextBid={getNextBid()}
           currentBid={props.item.value.currentBid}
           >
