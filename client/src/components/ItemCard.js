@@ -1,5 +1,5 @@
-import React, { useEffect, useState ,useRef} from "react";
-import { Row, Col, Card, Button, Modal } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from "react";
+import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
 import { fetchItem } from "../actions";
@@ -7,12 +7,12 @@ import BidButton from "./BidButton";
 import BidMessage from "./BidMessage";
 import {useFirebase } from 'react-redux-firebase'
 
-
-
 const ItemCard = (props) => {
   const { fetchItem } = props;
   const [ready,setReady] = useState(null);
   const [bidstatus,setBidStatus] = useState(0);
+  const [itemImage, setItemImage] = useState("https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png");
+  const [itemImageAlt, setItemImageAlt] = useState("No image available");
 
   const firebase = useFirebase()
   const offset=2000
@@ -20,14 +20,9 @@ const ItemCard = (props) => {
   let normalTimer=props.item.value.normalTimer
   let quickTimer=props.item.value.quickTimer
 
-
-
-
  const bidItem = (id, payload) => {
     return firebase.update(`items/${id}`, payload)
   }
-
-
 
   const bidClick = (id, newBid, username, email, userid) => {
     let timer=whichTimer()[0]
@@ -56,13 +51,8 @@ const ItemCard = (props) => {
       if(userid == props.item.value.buyerId){
         
         alert("you are currently the highest bidder");
-      
-      }
-
-      else{
-        
+      } else {
         alert("You can't bid on an item you are selling");
-      
       }
     }
   }
@@ -78,7 +68,6 @@ const ItemCard = (props) => {
       return ["quick",quickTimer-40000+offset]
 
     }
-
     else if(quick<=40000 && quick>20000){
       setBidStatus(2)
       return ["quick",quickTimer-20000+offset]
@@ -97,9 +86,13 @@ const ItemCard = (props) => {
 
   }
 
-
-
-
+useEffect(() => {
+  fetchItem(props.item.value.id);
+  if (props.item.value.file1) {
+    setItemImage(props.item.value.file1);
+    setItemImageAlt(props.item.value.title);
+  }
+ }, []);
 
   useEffect(() => {
     if(whichTimer()[1]-Date.now()+offset>0){
@@ -111,23 +104,11 @@ const ItemCard = (props) => {
      
   }, []);
 
-useEffect(() => {
-  fetchItem(props.item.value.id);
- }, []);
-
-
- //temporary alerts
- 
-
-
+  //temporary alerts
 
   const getNextBid = () =>{
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
   }
-
-
-
-
 
   return (
     <div>
@@ -136,16 +117,61 @@ useEffect(() => {
           {props.item.value.title}
         </Card.Header>
         <Card.Body className="px-0">
-          {props.item.file1 ?
-            <img src={props.item.file1} alt={props.item.title} width="100%" height="200" />
-          : <img src="https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png" alt="placeholder" width="100%" height="200" /> }
-          <br /><br />
-          <Card.Text className="px-4">{props.item.shortdesc}</Card.Text>
+          <div className="card-img-holder">
+            <img src={itemImage} alt={itemImageAlt} className="card-img" />
+          </div>
+          {props.item.value.file1 &&
+            <Container className="img-prev-holder">
+              <Row>
+                <Col className="col-2">
+                  <a onMouseEnter={() => setItemImage(props.item.value.file1)} onClick={() => setItemImage(props.item.value.file1)}>
+                    <img src={props.item.value.file1} alt="Click to see this image" className="img-thumbnail" />
+                  </a>
+                </Col>
+                {props.item.value.file2 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file2)} onClick={() => setItemImage(props.item.value.file2)}>
+                      <img src={props.item.value.file2} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file3 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file3)} onClick={() => setItemImage(props.item.value.file3)}>
+                      <img src={props.item.value.file3} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file4 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file4)} onClick={() => setItemImage(props.item.value.file4)}>
+                      <img src={props.item.value.file4} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file5 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file5)} onClick={() => setItemImage(props.item.value.file5)}>
+                      <img src={props.item.value.file5} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+                {props.item.value.file6 &&
+                  <Col className="col-2">
+                    <a onMouseEnter={() => setItemImage(props.item.value.file6)} onClick={() => setItemImage(props.item.value.file6)}>
+                      <img src={props.item.value.file6} alt="Click to see this image" className="img-thumbnail" />
+                    </a>
+                  </Col>
+                }
+              </Row>
+            </Container>
+          }
+          <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
           <BidButton
           ready={ready}
           variant="primary"
           className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId)}
+          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
           nextBid={getNextBid()}
           currentBid={props.item.value.currentBid}
           >
@@ -153,21 +179,22 @@ useEffect(() => {
           </BidButton>
           <Row>
             <Col md={6}>
-          
-    
+
               <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index}  normalTimer={props.item.value.normalTimer} quickTimer={props.item.value.quickTimer} whichTimer={whichTimer} setBidStatus={setBidStatus}>
                 {props.item.value.timerSet === false ?
                   <div>Time until<br />prebid ends</div>
                 : <div>Time<br />remaining</div>
                 }
+
               </ReactTimerStopwatch>
             </Col>
-            {props.item.value.buyerId &&
+            {props.item.value.buyerId && (
               <Col md={6}>
-                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
-                {props.item.buyerName} is winning!
+                <img src={props.item.value.buyerImage} width="50" height="50" />
+                &nbsp;&nbsp;
+                {props.item.value.buyerName} is winning!
               </Col>
-            }
+            )}
           </Row>
           <Row>
          {bidstatus!=0 && <BidMessage bidstatus={bidstatus}></BidMessage>}
@@ -176,8 +203,8 @@ useEffect(() => {
         </Card.Body>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
