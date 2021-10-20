@@ -1,10 +1,11 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import PrivacyContent from "./PrivacyContent";
 import BuyerContent from "./BuyerContent";
 import SellerTutorial from "./SellerTutorial";
 import BuyerTutorial from "./BuyerTutorial";
+import Commission from "./Commission";
 
 const Footer = () => {
   const history = useHistory();
@@ -12,6 +13,7 @@ const Footer = () => {
   const [terms, setTerms] = useState(false);
   const [seller, setSeller] = useState(false);
   const [buyer, setBuyer] = useState(false);
+  const [commission, setCommission] = useState(false);
 
   return (
     <div>
@@ -24,6 +26,7 @@ const Footer = () => {
           <Nav.Link onClick={() => setTerms(true)}>Terms of Service</Nav.Link>
           <Nav.Link onClick={() => setSeller(true)}>Seller Tutorial</Nav.Link>
           <Nav.Link onClick={() => setBuyer(true)}>Buyer Tutorial</Nav.Link>
+          <Nav.Link onClick={() => setCommission(true)}>Commission</Nav.Link>
         </Nav>
       </Navbar>
 
@@ -61,6 +64,15 @@ const Footer = () => {
         size="lg"
       >
         <BuyerTutorial handleBuyerModal={() => setBuyer(!buyer)} />
+      </Modal>
+
+      <Modal
+        show={commission}
+        onHide={() => setCommission(false)}
+        backdrop="static"
+        size="lg"
+      >
+        <Commission handleBuyerModal={() => setCommission(!commission)} />
       </Modal>
     </div>
   );

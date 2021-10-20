@@ -51,3 +51,24 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.card-img-holder {
+  text-align: center;
+  height: 12rem;
+}
+
+.card-img {
+  height: 100%;
+  width: auto;
+}
+
+.img-prev-holder {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.img-thumbnail {
+  max-height: 50px;
+  max-width: 100%;
+}
