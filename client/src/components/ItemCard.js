@@ -33,7 +33,7 @@ const ItemCard = (props) => {
     //test variables
     let buyerId="Test200"
     userid="test2020"
-    if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
+    if((userid !== props.item.value.buyerId && userid !== props.item.value.sellerId) || !props.item.value.buyerId) {
       if(timer=="normal"){
         bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1})
       }
@@ -195,7 +195,7 @@ useEffect(() => {
                 }
               </ReactTimerStopwatch>
             </Col>
-            {props.item.value.buyerId &&
+            {props.item.value.buyerName &&
               <Col md={6}>
                 <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
                 {props.item.buyerName} is winning!
