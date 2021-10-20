@@ -27,6 +27,7 @@
     "react-scripts": "^1.1.5",
     "react-stopwatch-timer": "^1.0.0",
     "redux": "^4.0.5",
+    "redux-firestore": "^0.15.0",
     "redux-form": "^8.3.7",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.3.1",

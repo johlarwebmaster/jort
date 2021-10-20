@@ -10,6 +10,9 @@ import {
 import { addItem } from "../actions";
 import { connect } from "react-redux";
 
+
+
+
 class ItemPage extends React.Component {
   constructor(props) {
     super(props);
@@ -20,10 +23,9 @@ class ItemPage extends React.Component {
         shortdesc: "",
         currentBid: "",
         category: "select",
-        sellTimer: Date().toLocaleString(),
-        timerSet: false,
         increment: "",
         sellerId: "",
+        bidCount:0,
         file1: "",
         file2: "",
         file3: "",
@@ -42,6 +44,7 @@ class ItemPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.myChangeHandler = this.myChangeHandler.bind(this);
   }
+  
 
   handleSubmit(e) {
     e.preventDefault();
@@ -51,13 +54,17 @@ class ItemPage extends React.Component {
     var title = this.state.values.title;
     var t4 = title.substring(0, 4);
     var seller = this.props.currentUserId;
-    var s4 = seller.substring(0, 4);
+    //testing variable for s4
+    var s4 ="testing"
     var itemId = s4 + "-" + t4 + "-" + r4() + r4() + "-" + r4() + r4() + r4();
+ 
     this.setState({
       values: {
         ...this.state.values,
         sellerId: this.props.currentUserId,
         id: itemId,
+        normalTimer: Date.now()+30000,
+        quickTimer:Date.now()+90000,
       },
     });
     setTimeout(() => {

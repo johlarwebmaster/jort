@@ -4,39 +4,46 @@ import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
 import { connect } from "react-redux";
 import { fetchItem } from "../actions";
 import BidButton from "./BidButton";
-import { useFirebaseConnect, useFirebase } from "react-redux-firebase";
+import BidMessage from "./BidMessage";
+import {useFirebase } from 'react-redux-firebase'
 
 const ItemCard = (props) => {
   const { fetchItem } = props;
   const [ready,setReady] = useState(null);
-  const [text, setText] = useState("");
+  const [bidstatus,setBidStatus] = useState(0);
   const [itemImage, setItemImage] = useState("https://jortinc.com/img/1200px-No-Image-Placeholder.svg.png");
   const [itemImageAlt, setItemImageAlt] = useState("No image available");
 
   const firebase = useFirebase()
-  const maxTime=props.item.value.sellTimer
-  const bidCount=props.item.value.bidCount
-  // We need to apply some useeffects, only when the value changes and not when
-  // it is intialized
-  const bidCountBool=useRef(false)
-  const stopWatch=useRef()
-  // just for testing
-  const bidMax=40
+  const offset=2000
 
+  let normalTimer=props.item.value.normalTimer
+  let quickTimer=props.item.value.quickTimer
 
-  const bidItem = (id, payload) => {
+ const bidItem = (id, payload) => {
     return firebase.update(`items/${id}`, payload)
   }
-  
 
-
-
-  const bidClick = (id, newBid, username, email, userid, image) => {
+  const bidClick = (id, newBid, username, email, userid) => {
+    let timer=whichTimer()[0]
+   
+    
+    //test variables
+    let buyerId="Test200"
+    userid="test2020"
     if(userid !== props.item.value.buyerId && userid !== props.item.value.sellerId){
-      //sellTimer:new Date(Date.now()+10000000)
-      //Not sure how to properly send new time to firebase
-      
-      bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid, buyerImage: image, bidCount:1})
+      if(timer=="normal"){
+        bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1})
+      }
+      else if(timer==null){
+        alert("Bidding has Ended")
+      }
+      // For some reason this needs a delay, otherwise new value is too high
+      else{
+        
+        bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1,quickTimer:firebase.database.ServerValue.increment(60000-(quickTimer-Date.now())-2000)})
+
+      }
     }
  
     else{
@@ -49,31 +56,35 @@ const ItemCard = (props) => {
       }
     }
   }
-  //Closes Timer Resets Clock
-  function clearTimer(){
-    setText("00:00:00")
-    clearInterval(stopWatch.current)
+
+  function whichTimer(){
+    let normal=normalTimer-Date.now()+offset
+    let quick=quickTimer-Date.now()+offset
+    if(normal>0){
+     return ["normal",normalTimer+offset]
+    }
+    else if(quick>40000){
+      setBidStatus(1)
+      return ["quick",quickTimer-40000+offset]
+
+    }
+    else if(quick<=40000 && quick>20000){
+      setBidStatus(2)
+      return ["quick",quickTimer-20000+offset]
+    
+    }
+
+    else if(quick<20000 && quick>0){
+      setBidStatus(3)
+      return ["quick",quickTimer+offset]
+    
+    }
+    else{
+      setBidStatus(0)
+      return [null,quickTimer]
+    }
+
   }
-
-
-
-  function counter() {
-    //add 1 millisecond to offset calculation time
-    let delta=new Date(maxTime).getTime()-Date.now()+1000
-    //Give 3 seconds for last minute bid to be processed 
-     if(delta<-3000){
-      clearTimer()
-      return
-    }
-    if (delta<0){
-      setText("00:00:00")
-      return
-    }
-    delta = new Date(delta)
-    setText(`${returnTimeString(delta.getUTCHours())}:${returnTimeString(delta.getUTCMinutes())}:${returnTimeString(delta.getUTCSeconds())}`);
-
-}
-
 
 useEffect(() => {
   fetchItem(props.item.value.id);
@@ -83,50 +94,20 @@ useEffect(() => {
   }
  }, []);
 
- useEffect(() => {
-   if(bidCount>0 && bidCount<bidMax){
-    stopWatch.current=setInterval(counter)
-    setReady(true)
-   }
-   // Do something for other timers
-    else{
-      setReady(false)
+  useEffect(() => {
+    if(whichTimer()[1]-Date.now()+offset>0){
+     setReady(true)
     }
- }, []);
+    else{
+     setReady(false)
+    }
+     
+  }, []);
 
-
- useEffect(() => {
-   console.log(bidCount,ready,props.item.value.id)
-   //skips initialization of bidCounter
-   if (bidCountBool.current==false){
-    bidCountBool.current=true
-    return
-   }
-  
-   // close timer
-  if(bidCount>=bidMax && bidCountBool.current){
-    clearTimer()
-    setReady(false)
-  }
-  else if(bidCount>0 && bidCount<bidMax && bidCountBool.current){
-    console.log("tatt",stopWatch)
-    clearTimer()
-    console.log(maxTime,stopWatch)
-    stopWatch.current=setInterval(counter)
-  }
-
-}, [bidCount]);
-
+  //temporary alerts
 
   const getNextBid = () =>{
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
-  }
-
-  function returnTimeString(number) {
-    if (number >= 10) {
-      return `${number}`;
-    }
-    return `0${number}`;
   }
 
   return (
@@ -198,26 +179,13 @@ useEffect(() => {
           </BidButton>
           <Row>
             <Col md={6}>
-              <ReactTimerStopwatch
-                className="react-stopwatch-timer__table"
-                color="green"
-                hintColor="red"
-                index={props.index}
-                text={text}
-              >
-                {props.item.value.timerSet === false ? (
-                  <div>
-                    Time until
-                    <br />
-                    prebid ends
-                  </div>
-                ) : (
-                  <div>
-                    Time
-                    <br />
-                    remaining
-                  </div>
-                )}
+
+              <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index}  normalTimer={props.item.value.normalTimer} quickTimer={props.item.value.quickTimer} whichTimer={whichTimer} setBidStatus={setBidStatus}>
+                {props.item.value.timerSet === false ?
+                  <div>Time until<br />prebid ends</div>
+                : <div>Time<br />remaining</div>
+                }
+
               </ReactTimerStopwatch>
             </Col>
             {props.item.value.buyerId && (
@@ -227,6 +195,10 @@ useEffect(() => {
                 {props.item.value.buyerName} is winning!
               </Col>
             )}
+          </Row>
+          <Row>
+         {bidstatus!=0 && <BidMessage bidstatus={bidstatus}></BidMessage>}
+       
           </Row>
         </Card.Body>
       </Card>
