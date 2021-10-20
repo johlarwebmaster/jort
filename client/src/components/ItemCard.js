@@ -31,14 +31,15 @@ const ItemCard = (props) => {
    
     
     //test variables
-    let buyerId="Test200"
-    userid="test2020"
     if((userid !== props.item.value.buyerId && userid !== props.item.value.sellerId) || !props.item.value.buyerId) {
       if(timer=="normal"){
         bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1})
       }
       else if(timer==null){
         alert("Bidding has Ended")
+        if (userid === props.item.value.buyerId) {
+          alert("You won!")
+        }
       }
       // For some reason this needs a delay, otherwise new value is too high
       else{
@@ -89,6 +90,9 @@ const ItemCard = (props) => {
     else{
       setBidStatus(0)
       setReady(false)
+      if (props.currentUserId === props.item.value.buyerId) {
+        alert("You win! Flawless Victory!");
+      }
       return [null,quickTimer]
     }
 
@@ -197,8 +201,8 @@ useEffect(() => {
             </Col>
             {props.item.value.buyerName &&
               <Col md={6}>
-                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
-                {props.item.buyerName} is winning!
+                <img src={props.item.value.buyerImage} width="50" height="50" />&nbsp;&nbsp;
+                {props.item.value.buyerName} is winning!
               </Col>
             }
           </Row>
