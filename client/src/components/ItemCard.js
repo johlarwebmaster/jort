@@ -66,7 +66,7 @@ const ItemCard = (props) => {
 
   function whichTimer(){
     let normal=normalTimer-Date.now()+offset
-    let quick=quickTimer-Date.now()+offsetgit
+    let quick=quickTimer-Date.now()+offset
     console.log(normal,quick)
     if(normal>0){
      return ["normal",normalTimer+offset]
