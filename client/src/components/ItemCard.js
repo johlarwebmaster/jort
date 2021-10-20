@@ -87,6 +87,8 @@ const ItemCard = (props) => {
     
     }
     else{
+      setBidStatus(0)
+      setReady(false)
       return [null,quickTimer]
     }
 
@@ -101,6 +103,7 @@ useEffect(() => {
  }, []);
 
   useEffect(() => {
+    console.log(whichTimer()[1]-Date.now()+offset>0)
     if(whichTimer()[1]-Date.now()+offset>0){
      setReady(true)
     }
