@@ -1,4 +1,4 @@
-import React from 'react';
+import Reactfrom 'react';
 import { Button } from 'react-bootstrap';
 
 const BidButton = (props) => {

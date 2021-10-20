@@ -91,7 +91,6 @@ const ItemCard = (props) => {
     
     }
     else{
-      setBidStatus(0)
       return [null,quickTimer]
     }
 
