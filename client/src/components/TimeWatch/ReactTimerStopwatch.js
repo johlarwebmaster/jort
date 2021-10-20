@@ -54,7 +54,7 @@ const ReactTimerStopwatch = (props) => {
 
   useEffect(() => {
     if(ready){
-     stopWatch.current=setInterval(counter)
+     stopWatch.current=setInterval(counter,500)
     }
     else{
      setText("00:00:00")
@@ -65,8 +65,8 @@ const ReactTimerStopwatch = (props) => {
  //setinterval can't detect changes on its own
 useEffect(() => {
 clearInterval(stopWatch.current)
-stopWatch.current=setInterval(counter)
-}, [quickTimer]);
+stopWatch.current=setInterval(counter,500)
+}, [quickTimer,normalTimer]);
 
 
     return (
