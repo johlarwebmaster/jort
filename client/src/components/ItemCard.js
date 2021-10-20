@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState, useRef } from "react";
 import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
 import ReactTimerStopwatch from "./TimeWatch/ReactTimerStopwatch";
@@ -51,8 +53,13 @@ const ItemCard = (props) => {
       if(userid == props.item.value.buyerId){
         
         alert("you are currently the highest bidder");
-      } else {
+      
+      }
+
+      else{
+        
         alert("You can't bid on an item you are selling");
+      
       }
     }
   }
@@ -81,6 +88,7 @@ const ItemCard = (props) => {
     }
     else{
       setBidStatus(0)
+      setReady(false)
       return [null,quickTimer]
     }
 
@@ -95,6 +103,7 @@ useEffect(() => {
  }, []);
 
   useEffect(() => {
+    console.log(whichTimer()[1]-Date.now()+offset>0)
     if(whichTimer()[1]-Date.now()+offset>0){
      setReady(true)
     }
@@ -179,22 +188,19 @@ useEffect(() => {
           </BidButton>
           <Row>
             <Col md={6}>
-
               <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index}  normalTimer={props.item.value.normalTimer} quickTimer={props.item.value.quickTimer} whichTimer={whichTimer} setBidStatus={setBidStatus}>
                 {props.item.value.timerSet === false ?
                   <div>Time until<br />prebid ends</div>
                 : <div>Time<br />remaining</div>
                 }
-
               </ReactTimerStopwatch>
             </Col>
-            {props.item.value.buyerId && (
+            {props.item.value.buyerId &&
               <Col md={6}>
-                <img src={props.item.value.buyerImage} width="50" height="50" />
-                &nbsp;&nbsp;
-                {props.item.value.buyerName} is winning!
+                <img src={props.item.buyerImage} width="50" height="50" />&nbsp;&nbsp;
+                {props.item.buyerName} is winning!
               </Col>
-            )}
+            }
           </Row>
           <Row>
          {bidstatus!=0 && <BidMessage bidstatus={bidstatus}></BidMessage>}
@@ -203,8 +209,8 @@ useEffect(() => {
         </Card.Body>
       </Card>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state, ownProps) => {
   return {
