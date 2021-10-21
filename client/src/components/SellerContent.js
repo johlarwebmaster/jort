@@ -61,6 +61,8 @@ const SellerContent = () => {
                         Please keep in mind that all services are helping your business and building it so good customer service is always a plus. We ask for feedback.
                     </li>
                 </ol>
+            <h3>Commission Breakdown</h3>
+            
         </Modal.Body>
     )
 }

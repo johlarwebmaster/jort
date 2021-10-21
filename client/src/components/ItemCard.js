@@ -26,14 +26,14 @@ const ItemCard = (props) => {
     return firebase.update(`items/${id}`, payload)
   }
 
-  const bidClick = (id, newBid, username, email, userid) => {
+  const bidClick = (id, newBid, username, email, userid, image) => {
     let timer=whichTimer()[0]
    
     
     //test variables
     if((userid !== props.item.value.buyerId && userid !== props.item.value.sellerId) || !props.item.value.buyerId) {
       if(timer=="normal"){
-        bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1})
+        bidItem(id, { currentBid: newBid, buyerName: username, buyerEmail: email, buyerId: userid, bidCount:props.item.value.bidCount+1, buyerImage: image})
       }
       else if(timer==null){
         alert("Bidding has Ended")
@@ -44,7 +44,7 @@ const ItemCard = (props) => {
       // For some reason this needs a delay, otherwise new value is too high
       else{
         
-        bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1,quickTimer:firebase.database.ServerValue.increment(60000-(quickTimer-Date.now())-2000)})
+        bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1, buyerImage: image, quickTimer:firebase.database.ServerValue.increment(60000-(quickTimer-Date.now())-2000)})
 
       }
     }
@@ -91,9 +91,6 @@ const ItemCard = (props) => {
     else{
       setBidStatus(0)
       setReady(false)
-      if (props.currentUserId === props.item.value.buyerId) {
-        alert("You win! Flawless Victory!");
-      }
       return [null,quickTimer]
     }
 
