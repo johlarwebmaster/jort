@@ -18,11 +18,13 @@ const ItemList = props => {
     const items = useSelector((state) => state.firebase.ordered.items)
 
     if (!isLoaded(items)) {
-        return (<Container className="App">
-        <Row className="flex-center">
-            <img src="assets/boat-wave.gif" alt="loading" />
-        </Row>
-    </Container>)
+        return (
+            <Container className="App">
+                <Row className="flex-center">
+                    <img src="assets/boat-wave.gif" alt="loading" />
+                </Row>
+            </Container>
+        )
     }
 
     if (isEmpty(items)) {
@@ -37,7 +39,8 @@ const ItemList = props => {
                         <Col md={6} key={key} className="my-2">
                             <ItemCard id={id} item={items[key]} />
                         </Col>
-                )})}
+                    )
+                })}
             </Row>
         </Container>
     )
