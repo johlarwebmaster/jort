@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import logo from '../logo.png';
+import CookieConsent from "react-cookie-consent";
 
 const Home = () => {
   const history = useHistory();
@@ -28,6 +29,17 @@ const Home = () => {
           </Card>
         </Col>
       </Row>
+      <CookieConsent
+        debug={true}
+        location="bottom"
+        style={{ paddingBottom: "60px" }}
+        enableDeclineButton
+        onDecline={() => {
+          alert("do something here");
+        }}
+      >
+        This website uses cookies to enhance the user experience. See our privacy policy for more.
+      </CookieConsent>
     </Container>
   );
 }

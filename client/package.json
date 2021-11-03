@@ -18,6 +18,7 @@
     "lodash": "^4.17.21",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
+    "react-cookie-consent": "^6.4.1",
     "react-countdown": "^2.3.1",
     "react-dom": "^17.0.1",
     "react-final-form": "^6.5.3",
