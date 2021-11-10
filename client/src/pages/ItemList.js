@@ -3,14 +3,8 @@ import ItemCard from '../components/ItemCard';
 import { Row, Col, Container } from 'react-bootstrap';
 import { connect, useSelector } from 'react-redux';
 import { useFirebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
-// import { fetchItems } from '../actions';
 
 const ItemList = props => {
-    // const { fetchItems } = props;
-
-    // useEffect(() => {
-    //     fetchItems();
-    // }, []);
     useFirebaseConnect([
         'items'
     ])
