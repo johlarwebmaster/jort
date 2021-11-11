@@ -47,7 +47,6 @@ const FooterMessage = props => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
         </>
     );
 };

@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 const Time = (props) => {   
     return(
         <React.Fragment>

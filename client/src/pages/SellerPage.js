@@ -64,7 +64,7 @@ class ItemPage extends React.Component {
         sellerId: this.props.currentUserId,
         id: itemId,
         normalTimer: Date.now()+21600000,
-        quickTimer:Date.now()+21690000
+        quickTimer: Date.now()+21690000
       },
     });
     setTimeout(() => {

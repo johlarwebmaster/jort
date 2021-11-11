@@ -17,106 +17,90 @@ const ItemCard = (props) => {
   const [itemImageAlt, setItemImageAlt] = useState("No image available");
 
   const firebase = useFirebase()
-  const offset=2000
+  const offset = 2000
 
-  let normalTimer=props.item.value.normalTimer
-  let quickTimer=props.item.value.quickTimer
+  let normalTimer = props.item.value.normalTimer
+  let quickTimer = props.item.value.quickTimer
 
- const bidItem = (id, payload) => {
+  const bidItem = (id, payload) => {
     return firebase.update(`items/${id}`, payload)
   }
 
   const bidClick = (id, newBid, username, email, userid, image) => {
-    let timer=whichTimer()[0]
-   
-    
+    let timer = whichTimer()[0]
+
     //test variables
-    if((userid !== props.item.value.buyerId && userid !== props.item.value.sellerId) || !props.item.value.buyerId) {
-      if(timer=="normal"){
-        bidItem(id, { currentBid: newBid, buyerName: username, buyerEmail: email, buyerId: userid, bidCount:props.item.value.bidCount+1, buyerImage: image})
+    if ((userid !== props.item.value.buyerId && userid !== props.item.value.sellerId) || !props.item.value.buyerId) {
+      if (timer === "normal") {
+        bidItem(id, { currentBid: newBid, buyerName: username, buyerEmail: email, buyerId: userid, bidCount: props.item.value.bidCount + 1, buyerImage: image })
       }
-      else if(timer==null){
+      else if (timer === null) {
         alert("Bidding has Ended")
-        if (userid === props.item.value.buyerId) {
-          alert("You won!")
-        }
       }
       // For some reason this needs a delay, otherwise new value is too high
-      else{
-        
-        bidItem(id, { currentBid: newBid,buyerName: username, buyerEmail: email, buyerId: userid,bidCount:props.item.value.bidCount+1, buyerImage: image, quickTimer:firebase.database.ServerValue.increment(60000-(quickTimer-Date.now())-2000)})
-
+      else {
+        bidItem(id, { currentBid: newBid, buyerName: username, buyerEmail: email, buyerId: userid, bidCount: props.item.value.bidCount + 1, buyerImage: image, quickTimer: firebase.database.ServerValue.increment(60000-(quickTimer-Date.now())-2000) })
       }
     }
  
-    else{
-          
-      if(userid == props.item.value.buyerId){
-        
+    else {
+      if (userid === props.item.value.buyerId) {
         alert("you are currently the highest bidder");
-      
       }
-
-      else{
-        
+      else {
         alert("You can't bid on an item you are selling");
-      
       }
     }
   }
 
-  function whichTimer(){
-    let normal=normalTimer-Date.now()+offset
-    let quick=quickTimer-Date.now()+offset
-    console.log(normal,quick)
-    if(normal>0){
-     return ["normal",normalTimer+offset]
+  function whichTimer() {
+    let normal = normalTimer - Date.now() + offset
+    let quick = quickTimer - Date.now() + offset
+    console.log(normal, quick)
+    if (normal > 0) {
+      return ["normal", normalTimer + offset]
     }
-    else if(quick>40000){
+    else if (quick > 40000) {
       setBidStatus(1)
-      return ["quick",quickTimer-40000+offset]
-
+      return ["quick", quickTimer - 40000 + offset]
     }
-    else if(quick<=40000 && quick>20000){
+    else if (quick <= 40000 && quick > 20000) {
       setBidStatus(2)
-      return ["quick",quickTimer-20000+offset]
-    
+      return ["quick", quickTimer - 20000 + offset]
     }
-
-    else if(quick<20000 && quick>0){
+    else if (quick < 20000 && quick > 0) {
       setBidStatus(3)
-      return ["quick",quickTimer+offset]
-    
+      return ["quick", quickTimer + offset]
     }
-    else{
+    else {
       setBidStatus(0)
       setReady(false)
-      return [null,quickTimer]
+      if (props.currentUserId === props.item.value.buyerId) {
+        alert('You won!');
+      }
+      return [null, quickTimer]
     }
-
   }
-
-useEffect(() => {
-  fetchItem(props.item.value.id);
-  if (props.item.value.file1) {
-    setItemImage(props.item.value.file1);
-    setItemImageAlt(props.item.value.title);
-  }
- }, []);
 
   useEffect(() => {
-    console.log(whichTimer()[1]-Date.now()+offset>0)
-    if(whichTimer()[1]-Date.now()+offset>0){
-     setReady(true)
+    fetchItem(props.item.value.id);
+    if (props.item.value.file1) {
+      setItemImage(props.item.value.file1);
+      setItemImageAlt(props.item.value.title);
     }
-    else{
-     setReady(false)
+  }, []);
+
+  useEffect(() => {
+    console.log(whichTimer()[1] - Date.now() + offset > 0)
+    if (whichTimer()[1] - Date.now() + offset > 0) {
+      setReady(true)
     }
-     
+    else {
+      setReady(false)
+    }
   }, []);
 
   //temporary alerts
-
   const getNextBid = () =>{
     return `${Number(props.item.value.currentBid) + Number(props.item.value.increment)}.00`
   }
@@ -179,15 +163,13 @@ useEffect(() => {
           }
           <Card.Text className="px-4">{props.item.value.shortdesc}</Card.Text>
           <BidButton
-          ready={ready}
-          variant="primary"
-          className="btn-block text-center increase-bid"
-          onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
-          nextBid={getNextBid()}
-          currentBid={props.item.value.currentBid}
-          >
-            
-          </BidButton>
+            ready={ready}
+            variant="primary"
+            className="btn-block text-center increase-bid"
+            onClick={() => bidClick(props.item.value.id, getNextBid(), props.firstName, props.email, props.currentUserId, props.imageUrl)}
+            nextBid={getNextBid()}
+            currentBid={props.item.value.currentBid}
+          />
           <Row>
             <Col md={6}>
               <ReactTimerStopwatch className="react-stopwatch-timer__table" color="green" hintColor="red"  index={props.index}  normalTimer={props.item.value.normalTimer} quickTimer={props.item.value.quickTimer} whichTimer={whichTimer} setBidStatus={setBidStatus}>
@@ -205,8 +187,9 @@ useEffect(() => {
             }
           </Row>
           <Row>
-         {bidstatus!=0 && <BidMessage bidstatus={bidstatus}></BidMessage>}
-       
+            {bidstatus !== 0 &&
+              <BidMessage bidstatus={bidstatus} />
+            }
           </Row>
         </Card.Body>
       </Card>
