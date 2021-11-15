@@ -6,12 +6,11 @@ import {
   InputGroup,
   Button,
   Modal,
+  ListGroup,
 } from "react-bootstrap";
 import { addItem } from "../actions";
 import { connect } from "react-redux";
-
-
-
+import Commission from "../components/Commission";
 
 class ItemPage extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class ItemPage extends React.Component {
         category: "select",
         increment: "",
         sellerId: "",
-        bidCount:0,
+        bidCount: 0,
         file1: "",
         file2: "",
         file3: "",
@@ -39,12 +38,12 @@ class ItemPage extends React.Component {
       },
       agreed: false,
       show: false,
+      showCommission: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.myChangeHandler = this.myChangeHandler.bind(this);
   }
-  
 
   handleSubmit(e) {
     e.preventDefault();
@@ -55,16 +54,16 @@ class ItemPage extends React.Component {
     var t4 = title.substring(0, 4);
     var seller = this.props.currentUserId;
     //testing variable for s4
-    var s4 ="testing"
+    var s4 = "testing";
     var itemId = s4 + "-" + t4 + "-" + r4() + r4() + "-" + r4() + r4() + r4();
- 
+
     this.setState({
       values: {
         ...this.state.values,
         sellerId: this.props.currentUserId,
         id: itemId,
-        normalTimer: Date.now()+21600000,
-        quickTimer: Date.now()+21690000
+        normalTimer: Date.now() + 21600000,
+        quickTimer: Date.now() + 21690000,
       },
     });
     setTimeout(() => {
@@ -103,6 +102,19 @@ class ItemPage extends React.Component {
   handleModal = (e) => {
     this.setState({
       show: !this.state.show,
+    });
+  };
+
+  handleCommission = (e) => {
+    this.setState({
+      show: !this.state.show,
+      showCommission: !this.state.showCommission,
+    });
+  };
+
+  handleCommissionOnlyClose = (e) => {
+    this.setState({
+      showCommission: !this.state.showCommission,
     });
   };
 
@@ -394,12 +406,30 @@ class ItemPage extends React.Component {
                 ask for feedback.
               </li>
             </ol>
+            <h3>Commission</h3>
+            <ol>
+              <li>
+                Click{" "}
+                <a href="#" onClick={this.handleCommission}>
+                  here
+                </a>{" "}
+                for more details.
+              </li>
+            </ol>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={this.handleModal}>
               Okay
             </Button>
           </Modal.Footer>
+        </Modal>
+        <Modal
+          show={this.state.showCommission}
+          onHide={this.handleCommission}
+          backdrop="static"
+          size="lg"
+        >
+          <Commission handleBuyerModal={this.handleCommissionOnlyClose} />
         </Modal>
       </Container>
     );
